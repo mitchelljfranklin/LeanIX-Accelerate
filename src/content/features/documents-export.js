@@ -80,12 +80,16 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
 
       menu.appendChild(excelOption);
 
-      button.addEventListener("mousedown", function (event) {
+      var toggleGuard = false;
+
+      button.addEventListener("mousedown", function () {
         menu.style.display = menu.style.display === "none" ? "block" : "none";
-        event.stopPropagation();
-      }, true);
+        toggleGuard = true;
+        setTimeout(function () { toggleGuard = false; }, 0);
+      });
 
       document.addEventListener("mousedown", function (event) {
+        if (toggleGuard) return;
         if (!container.contains(event.target)) {
           closeMenu();
         }

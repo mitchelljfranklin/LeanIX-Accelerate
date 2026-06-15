@@ -15,12 +15,14 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       let menu = null;
       let pageType = null;
       let intersectionObserver = null;
+      var toggleGuard = false;
 
       const closeMenu = function () {
         if (menu) menu.style.display = "none";
       };
 
       document.addEventListener("mousedown", function (event) {
+        if (toggleGuard) return;
         if (container && !container.contains(event.target)) {
           closeMenu();
         }
@@ -62,10 +64,11 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         menu.appendChild(jsonOption);
         menu.appendChild(excelOption);
 
-        button.addEventListener("mousedown", function (event) {
+        button.addEventListener("mousedown", function () {
           menu.style.display = menu.style.display === "none" ? "block" : "none";
-          event.stopPropagation();
-        }, true);
+          toggleGuard = true;
+          setTimeout(function () { toggleGuard = false; }, 0);
+        });
 
         container.appendChild(menu);
         container.appendChild(button);
