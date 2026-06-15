@@ -110,6 +110,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     exportToExcel: function () {
+      DOMUtils.showToast("Preparing Excel download\u2026");
       const table = document.querySelector("table.table-hover");
       if (!table) {
         alert("Could not find the documents table on the page.");

@@ -119,6 +119,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     exportJSON: function (pageType) {
+      DOMUtils.showToast("Preparing JSON download\u2026");
       let data;
 
       if (pageType === "factsheet") {
@@ -137,6 +138,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     exportExcel: function () {
+      DOMUtils.showToast("Starting Excel export\u2026");
       const wrappers = document.querySelectorAll(".contentWrapper");
       for (const wrapper of wrappers) {
         const span = wrapper.querySelector(".textContent");

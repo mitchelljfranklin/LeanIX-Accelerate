@@ -353,6 +353,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     exportExcel: function () {
+      DOMUtils.showToast("Preparing Excel download\u2026");
       const root = document.querySelector("lx-document-fields-form");
       if (!root) {
         alert("Could not find the document fields form on the page.");
@@ -406,6 +407,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     exportPrint: function () {
+      DOMUtils.showToast("Opening print dialog\u2026", 2000);
       const root = document.querySelector("lx-document-fields-form");
       if (!root) {
         alert("Could not find the document fields form on the page.");

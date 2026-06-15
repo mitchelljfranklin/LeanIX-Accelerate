@@ -83,4 +83,23 @@ const DOMUtils = {
     if (/\/search/.test(path)) return "search";
     return "other";
   },
+
+  showToast(message, duration) {
+    duration = duration || 3000;
+    var toast = document.createElement("div");
+    toast.className = "lx-ext-toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(function () {
+      toast.classList.add("lx-ext-toast-show");
+    }, 10);
+
+    setTimeout(function () {
+      toast.classList.remove("lx-ext-toast-show");
+      setTimeout(function () {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 300);
+    }, duration);
+  },
 };

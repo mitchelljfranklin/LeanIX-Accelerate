@@ -162,3 +162,35 @@
 .lx-ext-menu-item:hover {
   background: #f0f2ff;
 }
+
+
+/* ==========================================================================
+ * 5. Toast Notification
+ * ========================================================================== */
+
+/*
+ * Download notification toast
+ * Features: data-export, print-export, documents-export
+ * Slides up from the bottom-center of the viewport to confirm an export
+ * action has been triggered. Auto-dismisses after the configured duration.
+ */
+.lx-ext-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: #333;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 13px;
+  z-index: 9999999;
+  opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+}
+
+.lx-ext-toast-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

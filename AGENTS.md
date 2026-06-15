@@ -182,6 +182,13 @@ Returns true if the hostname matches `leanix.net` or `leanix.com`.
 ### `DOMUtils.getPageType()`
 Returns `"factsheet"`, `"inventory"`, `"reports"`, `"dashboard"`, `"search"`, or `"other"`.
 
+### `DOMUtils.showToast(message, duration)`
+Shows a brief toast notification at the bottom-center of the viewport. Call this at the start of any export/download action so users know something is happening.
+```js
+DOMUtils.showToast("Preparing download…");      // 3s default
+DOMUtils.showToast("Opening print…", 2000);      // custom 2s duration
+```
+
 ## Settings API
 
 ```js
