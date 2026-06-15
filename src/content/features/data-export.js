@@ -20,7 +20,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         if (menu) menu.style.display = "none";
       };
 
-      document.addEventListener("click", function (event) {
+      document.addEventListener("mousedown", function (event) {
         if (container && !container.contains(event.target)) {
           closeMenu();
         }
@@ -62,10 +62,10 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         menu.appendChild(jsonOption);
         menu.appendChild(excelOption);
 
-        button.addEventListener("click", function (event) {
+        button.addEventListener("mousedown", function (event) {
           menu.style.display = menu.style.display === "none" ? "block" : "none";
-          event.stopImmediatePropagation();
-        });
+          event.stopPropagation();
+        }, true);
 
         container.appendChild(menu);
         container.appendChild(button);
