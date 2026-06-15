@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/LeanIXAcc%20Logo.png" alt="LeanIX Accelerate" width="128" />
+  <img src="docs/LeanIXAccSlim.png" alt="LeanIX Accelerate" width="128" />
 </p>
 
 <h1 align="center">LeanIX Accelerate</h1>
