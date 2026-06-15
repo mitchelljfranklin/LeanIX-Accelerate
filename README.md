@@ -21,13 +21,13 @@
 
 ### Contents
 
-[Why Accelerate?](#why-accelerate) ·
-[Features](#-features) ·
-[Quick Start](#-quick-start) ·
-[Commands](#-commands) ·
-[Contribute](#-contribute) ·
-[Privacy & Data](#-privacy--data) ·
-[License](#-license)
+- [Why Accelerate?](#why-accelerate)
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Commands](#-commands)
+- [Contribute](#-contribute)
+- [Privacy & Data](#-privacy--data)
+- [License](#-license)
 
 ---
 
