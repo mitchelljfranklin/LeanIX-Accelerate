@@ -17,6 +17,16 @@
   <code>🌐 Firefox</code>
 </p>
 
+<p align="center">
+  <a href="https://chromewebstore.google.com"><img src="https://img.shields.io/badge/Chrome-coming%20soon-4285F4?logo=googlechrome&logoColor=white" /></a>
+  <a href="https://microsoftedge.microsoft.com/addons"><img src="https://img.shields.io/badge/Edge-coming%20soon-0078D7?logo=microsoftedge&logoColor=white" /></a>
+  <a href="https://addons.mozilla.org"><img src="https://img.shields.io/badge/Firefox-coming%20soon-FF7139?logo=firefox&logoColor=white" /></a>
+</p>
+
+<p align="center">
+  <a href="https://star-history.com/#mitchelljfranklin/LeanIX-Accelerate&Date"><img src="https://img.shields.io/badge/star%20history-view-5c6ac4" /></a>
+</p>
+
 ---
 
 ### Contents
@@ -24,9 +34,13 @@
 - [Why Accelerate?](#why-accelerate)
 - [Features](#-features)
 - [Quick Start](#-quick-start)
+- [Supported Browsers](#-supported-browsers)
 - [Commands](#-commands)
 - [Contribute](#-contribute)
+- [FAQ](#-faq)
 - [Privacy & Data](#-privacy--data)
+- [Contributors](#-contributors)
+- [Security](#-security)
 - [License](#-license)
 
 ---
@@ -98,6 +112,20 @@ Then:
 
 ---
 
+## 🌐 Supported Browsers
+
+| Browser | Minimum Version | Store |
+|---|---|---|
+| Google Chrome | 88+ | [Chrome Web Store](https://chromewebstore.google.com) *(coming soon)* |
+| Microsoft Edge | 88+ | [Edge Add-ons](https://microsoftedge.microsoft.com/addons) *(coming soon)* |
+| Mozilla Firefox | 128+ | [Firefox Add-ons](https://addons.mozilla.org) *(coming soon)* |
+
+All browsers require Manifest V3 support. The extension is tested and built for all three platforms via `npm run build`.
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
 ## 🛠 Commands
 
 | Command | What it does |
@@ -119,6 +147,28 @@ LeanIX Accelerate is built for practitioners, by practitioners. Found a bug? Hav
 - **Request a feature** — Describe the workflow friction and what button/export would solve it
 - **Submit a PR** — Fork, branch, code, and open a pull request (see below)
 - **Share selectors** — Know the DOM structure of a LeanIX page that needs love? Drop it in an issue with the relevant HTML
+
+### Submitting a great feature request
+
+Help us build the right thing faster. When opening a feature request, include:
+
+```
+**Which LeanIX page?**
+e.g. Factsheet view, Inventory, Reports, Architecture Decisions
+
+**What are you trying to do?**
+e.g. Export all rows to CSV, print a formatted report, copy IDs
+
+**How do you do it today?**
+e.g. Manually copy each row, take a screenshot, export via the ... menu
+
+**Relevant page URL structure**
+e.g. /factsheet/... or /documents/...
+
+**Optional: DOM snippet**
+Share the HTML of the area where the button should appear — this
+dramatically speeds up development.
+```
 
 ### Development workflow
 
@@ -225,6 +275,48 @@ LeanIX-Accelerate/
 
 ---
 
+## ❓ FAQ
+
+<details>
+<summary><strong>Why don't the buttons appear on my page?</strong></summary>
+
+Each feature activates only on specific LeanIX pages. Make sure the feature is toggled on in the popup or settings. If it is, the target DOM element (table, form, etc.) may have changed — please [open an issue](https://github.com/mitchelljfranklin/LeanIX-Accelerate/issues/new).
+</details>
+
+<details>
+<summary><strong>Does this work on self-hosted / on-premise LeanIX?</strong></summary>
+
+Yes, as long as your instance is accessible at a `*.leanix.net` or `*.leanix.com` domain. If your instance uses a different domain, we can add it — just open an issue with the domain pattern.
+</details>
+
+<details>
+<summary><strong>Will this slow down my LeanIX pages?</strong></summary>
+
+No. The extension uses lightweight DOM observers that only activate when the target element appears. No polling, no heavy computation. The total JS payload is under 1 MB (mostly the SheetJS library for Excel export).
+</details>
+
+<details>
+<summary><strong>How do I update the extension?</strong></summary>
+
+If installed from a store, updates happen automatically. If loaded unpacked, pull the latest changes and click the reload icon on the extension card in `chrome://extensions`.
+</details>
+
+<details>
+<summary><strong>Can I request a new feature or page integration?</strong></summary>
+
+Absolutely. Use the [feature request template](#submitting-a-great-feature-request) above and open an issue.
+</details>
+
+<details>
+<summary><strong>Is my data safe?</strong></summary>
+
+100%. The extension runs entirely in your browser. No data is collected, transmitted, or stored externally. See [Privacy & Data](#-privacy--data) for details.
+</details>
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
 ## 🔒 Privacy & Data
 
 **LeanIX Accelerate does not collect, transmit, or store any data from your LeanIX environment.** Period.
@@ -237,6 +329,36 @@ LeanIX-Accelerate/
 - Permission `activeTab` and host permissions for `*.leanix.net` / `*.leanix.com` are required to inject the UI buttons onto LeanIX pages.
 
 You can verify all of this yourself — the source is 100% open and right here.
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
+## 👥 Contributors
+
+Thanks to everyone who has contributed to making LeanIX Accelerate better!
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/mitchelljfranklin"><img src="https://github.com/mitchelljfranklin.png" width="80px" alt=""/><br /><sub><b>Mitch Franklin</b></sub></a><br /><sub>💻 📖 🚧</sub></td>
+  </tr>
+</table>
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+Want to see your name here? Check out the [Contribute](#-contribute) section.
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
+## 🔐 Security
+
+Found a vulnerability? Please **do not** open a public issue. Instead, see [SECURITY.md](SECURITY.md) for responsible disclosure.
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
