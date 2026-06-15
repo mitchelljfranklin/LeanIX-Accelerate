@@ -1,8 +1,7 @@
 {
   "name": "leanix-accelerate",
   "version": "1.0.0",
-  "description": "About
-Unlock new levels of efficiency and productivity with LeanIX Accelerate, the ultimate browser extension for LeanIX users.",
+  "description": "Unlock new levels of efficiency and productivity with LeanIX Accelerate, the ultimate browser extension for LeanIX users.",
   "private": true,
   "scripts": {
     "lint": "eslint src/",

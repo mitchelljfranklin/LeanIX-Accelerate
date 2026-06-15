@@ -12,7 +12,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 
 const PACKAGE = require(path.join(ROOT, "package.json"));
@@ -39,6 +39,8 @@ function shouldInclude(filePath) {
 }
 
 function copyTree(zipDir, sourceDir) {
+  if (!fs.existsSync(zipDir)) fs.mkdirSync(zipDir, { recursive: true });
+
   const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
   for (const entry of entries) {
     const srcPath = path.join(sourceDir, entry.name);
@@ -48,9 +50,10 @@ function copyTree(zipDir, sourceDir) {
 
     if (entry.isDirectory()) {
       fs.mkdirSync(destPath, { recursive: true });
-      copyTree(zipDir, srcPath);
+      copyTree(destPath, srcPath);
     } else {
-      fs.copyFileSync(srcPath, destPath);
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      fs.writeFileSync(destPath, fs.readFileSync(srcPath));
     }
   }
 }
@@ -69,7 +72,8 @@ function prepareStaging(label) {
     if (fs.statSync(src).isDirectory()) {
       copyTree(stage, src);
     } else {
-      fs.copyFileSync(src, path.join(stage, inc));
+      fs.mkdirSync(stage, { recursive: true });
+      fs.writeFileSync(path.join(stage, inc), fs.readFileSync(src));
     }
   }
 

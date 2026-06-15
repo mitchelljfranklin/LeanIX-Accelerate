@@ -1,0 +1,19 @@
+LeanIX Accelerate — the ultimate browser extension for LeanIX users.
+
+Unlock new levels of efficiency and productivity with one-click export buttons injected exactly where you need them. No more navigating menus, copying data manually, or print-preview dances.
+
+✨ Features
+
+📊 Data Export — Factsheet & Inventory pages. Floating export button appears automatically. Export table data as JSON or trigger the native Excel export in one click.
+
+📄 Document Export — Document detail pages. Export button injected into the document header. Print to PDF with full formatting, or download a structured Excel workbook with all sections, dates, fact sheet lists, and users.
+
+📋 Document List Export — Architecture Decisions & list pages. Export button in the page header. Download the visible document list (ID, Title, Status, Creator, Last Updated) as a clean .xlsx spreadsheet.
+
+⚙️ Smart Controls — Popup & full settings page. Toggle any feature on/off from the extension popup. Full settings panel with reset-to-defaults. Buttons survive page navigation — no reloads needed.
+
+🔒 Privacy
+
+LeanIX Accelerate runs entirely in your browser. No data is collected, transmitted, or stored externally. No analytics, no telemetry, no tracking. The only data stored is your feature-toggle preferences, saved locally via chrome.storage.sync.
+
+100% open source — verify it yourself at github.com/mitchelljfranklin/LeanIX-Accelerate
