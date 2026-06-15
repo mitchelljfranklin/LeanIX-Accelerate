@@ -8,7 +8,14 @@
   Unlock new levels of efficiency and productivity — the ultimate browser extension for LeanIX users.
 </p>
 
-`🔖 v1.0.0` `🧩 Manifest V3` `📜 GPL 3.0` `🌐 Chrome` `🌐 Edge` `🌐 Firefox`
+<p align="center">
+  <code>🔖 v1.0.0</code>
+  <code>🧩 Manifest V3</code>
+  <code>📜 GPL 3.0</code>
+  <code>🌐 Chrome</code>
+  <code>🌐 Edge</code>
+  <code>🌐 Firefox</code>
+</p>
 
 ---
 
