@@ -16,16 +16,20 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       var pageType = null;
       var intersectionObserver = null;
 
+      var menuOpen = false;
+
       var openMenu = function () {
         if (!menu) return;
         menu.style.display = "block";
         backdrop.style.display = "block";
+        menuOpen = true;
       };
 
       var closeMenu = function () {
         if (!menu) return;
         menu.style.display = "none";
         backdrop.style.display = "none";
+        menuOpen = false;
       };
 
       var backdrop = document.createElement("div");
@@ -73,10 +77,10 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         menu.appendChild(excelOption);
 
         button.addEventListener("click", function () {
-          if (menu.style.display === "none") {
-            openMenu();
-          } else {
+          if (menuOpen) {
             closeMenu();
+          } else {
+            openMenu();
           }
         });
 

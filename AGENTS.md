@@ -211,13 +211,25 @@ SettingsStore.onChange(callback)     // listens for storage changes
 
 ### Menu visibility toggling
 ```js
-// CORRECT — must use explicit value to override CSS class
-menu.style.display = "block";   // show
-menu.style.display = "none";    // hide
+// CORRECT — use a boolean flag to track state
+var menuOpen = false;
 
-// WRONG — empty string defers to CSS class which has display:none
-menu.style.display = "";        // menu stays hidden!
+button.addEventListener("click", function () {
+  if (menuOpen) {
+    menu.style.display = "none";
+    menuOpen = false;
+  } else {
+    menu.style.display = "block";
+    menuOpen = true;
+  }
+});
+
+// WRONG — element.style.display only reflects INLINE styles, not CSS classes
+// If display:none is in a CSS class, style.display returns "" not "none"
+if (menu.style.display === "none") { ... }  // BROKEN with CSS classes
 ```
+
+**Critical:** `element.style.display` reads only inline style values. When `display: none` comes from a CSS class (not an inline `style=` attribute), `element.style.display` is `""` (empty string). Never use `style.display` to check visibility — use a boolean `menuOpen` flag instead.
 
 ### Button injection guard
 Always check for existing button ID before injecting:

@@ -76,9 +76,12 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       });
       document.body.appendChild(backdrop);
 
+      var menuOpen = false;
+
       var closeMenu = function () {
         menu.style.display = "none";
         backdrop.style.display = "none";
+        menuOpen = false;
       };
 
       var exportModule = window.__leanixFeatures__.documentsExport;
@@ -91,11 +94,12 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       menu.appendChild(excelOption);
 
       button.addEventListener("click", function () {
-        if (menu.style.display === "none") {
+        if (menuOpen) {
+          closeMenu();
+        } else {
           menu.style.display = "block";
           backdrop.style.display = "block";
-        } else {
-          closeMenu();
+          menuOpen = true;
         }
       });
 
