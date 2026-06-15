@@ -8,14 +8,12 @@
   Unlock new levels of efficiency and productivity — the ultimate browser extension for LeanIX users.
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-5c6ac4" alt="Version" />
-  <img src="https://img.shields.io/badge/manifest-v3-blue" alt="Manifest V3" />
-  <img src="https://img.shields.io/badge/license-GPL%203.0-green" alt="License" />
-  <img src="https://img.shields.io/badge/chrome-yes-4285F4?logo=googlechrome&logoColor=white" alt="Chrome" />
-  <img src="https://img.shields.io/badge/edge-yes-0078D7?logo=microsoftedge&logoColor=white" alt="Edge" />
-  <img src="https://img.shields.io/badge/firefox-yes-FF7139?logo=firefox&logoColor=white" alt="Firefox" />
-</p>
+![Version](https://img.shields.io/github/package-json/v/mitchelljfranklin/LeanIX-Accelerate?color=5c6ac4)
+![Manifest](https://img.shields.io/badge/manifest-v3-blue)
+![License](https://img.shields.io/badge/license-GPL%203.0-green)
+![Chrome](https://img.shields.io/badge/chrome-yes-4285F4?logo=googlechrome&logoColor=white)
+![Edge](https://img.shields.io/badge/edge-yes-0078D7?logo=microsoftedge&logoColor=white)
+![Firefox](https://img.shields.io/badge/firefox-yes-FF7139?logo=firefox&logoColor=white)
 
 ---
 
