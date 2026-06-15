@@ -1,0 +1,164 @@
+/*
+ * LeanIX Custom Extension Styles
+ * ===============================
+ * All styling for custom extension UI elements injected into the LeanIX platform.
+ *
+ * Table of Contents:
+ *   1. Containers        - Wrapper divs that hold buttons and menus
+ *   2. Export Buttons    - Main trigger buttons
+ *   3. Dropdown Menus    - Export option dropdowns
+ *   4. Menu Items        - Individual options within dropdowns
+ */
+
+
+/* ==========================================================================
+ * 1. Containers
+ * ========================================================================== */
+
+/*
+ * Fixed export container
+ * Feature: data-export (facts table Export button)
+ * Positioned bottom-right of the viewport, hidden by default until
+ * lx-factsheets-table becomes visible.
+ */
+.lx-ext-container-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999999;
+  display: none;
+}
+
+/*
+ * Inline export container
+ * Features: print-export, documents-export (header-adjacent Export buttons)
+ * Renders inline within a button group so it flows naturally alongside
+ * existing LeanIX buttons (e.g. "Edit", "New Decision").
+ */
+.lx-ext-container-inline {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+
+/* ==========================================================================
+ * 2. Export Buttons
+ * ========================================================================== */
+
+/*
+ * Floating export button
+ * Feature: data-export
+ * Appears fixed bottom-right when the factsheet table is visible.
+ * Has a larger shadow and slightly bigger text than inline variants.
+ */
+.lx-ext-btn {
+  padding: 10px 16px;
+  background: #5c6ac4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Darken the floating button on hover for visual feedback. */
+.lx-ext-btn:hover {
+  background: #4a57b3 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/*
+ * Inline header button
+ * Features: print-export (Export to Print), documents-export (Documents Export)
+ * Sized to match the native LeanIX lx-button (size="large") height of 36px.
+ * Uses the same brand color (#5c6ac4) as the floating variant.
+ */
+.lx-ext-btn-inline {
+  padding: 7px 16px;
+  background: #5c6ac4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  height: 32px;
+}
+
+/* Darken the inline button on hover. */
+.lx-ext-btn-inline:hover {
+  background: #4a57b3;
+}
+
+
+/* ==========================================================================
+ * 3. Dropdown Menus
+ * ========================================================================== */
+
+/*
+ * Shared dropdown menu base
+ * Features: data-export, print-export, documents-export
+ * Absolutely positioned relative to the container, hidden by default.
+ * Display is toggled to show/hide when the Export button is clicked.
+ */
+.lx-ext-menu {
+  position: absolute;
+  right: 0;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+  overflow: hidden;
+  display: none;
+}
+
+/*
+ * Upward-opening menu variant
+ * Feature: data-export
+ * The floating Export button is at the bottom of the viewport, so the
+ * menu must open upward to avoid overflowing off-screen.
+ */
+.lx-ext-menu-up {
+  bottom: 100%;
+  margin-bottom: 6px;
+}
+
+/*
+ * Downward-opening menu variant
+ * Features: print-export, documents-export
+ * Header-placed buttons have space below them; the menu opens downward.
+ * z-index: 1 keeps it above sibling header elements.
+ */
+.lx-ext-menu-down {
+  top: 100%;
+  margin-top: 4px;
+  z-index: 1;
+}
+
+
+/* ==========================================================================
+ * 4. Menu Items
+ * ========================================================================== */
+
+/*
+ * Individual menu option
+ * Features: data-export, print-export, documents-export
+ * Each clickable option inside a dropdown menu (e.g. "Export as JSON",
+ * "Export to Excel", "Export to Print"). Hover highlights with a
+ * light purple tint (#f0f2ff) on a 0.15s transition.
+ */
+.lx-ext-menu-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.lx-ext-menu-item:hover {
+  background: #f0f2ff;
+}

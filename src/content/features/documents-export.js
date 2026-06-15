@@ -1,0 +1,178 @@
+window.__leanixFeatures__ = window.__leanixFeatures__ || {};
+
+(function () {
+  window.__leanixFeatures__.documentsExport = {
+    init: function (DOM, settings) {
+      let intersectionObserver = null;
+
+      const observeTable = function (tableEl) {
+        if (intersectionObserver) intersectionObserver.disconnect();
+        intersectionObserver = new IntersectionObserver(function (entries) {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              window.__leanixFeatures__.documentsExport.addExportButton(DOM);
+            }
+          }
+        });
+        intersectionObserver.observe(tableEl);
+      };
+
+      const existing = document.querySelector("table.table-hover");
+      if (existing) observeTable(existing);
+
+      const mutObserver = new MutationObserver(function (mutations) {
+        for (const mutation of mutations) {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType !== Node.ELEMENT_NODE) continue;
+            if (node.matches && node.matches("table.table-hover")) {
+              observeTable(node);
+              return;
+            }
+            if (node.querySelectorAll) {
+              const table = node.querySelector("table.table-hover");
+              if (table) { observeTable(table); return; }
+            }
+          }
+        }
+      });
+      mutObserver.observe(document.body, { childList: true, subtree: true });
+    },
+
+    addExportButton: function (DOM) {
+      const headerTitle = document.querySelector('[data-testid="header-title"]');
+      if (!headerTitle || document.getElementById("lx-ext-documents-export-btn")) return;
+
+      const buttonRow = headerTitle.closest(".tw-flex.tw-min-h-xxl");
+      if (!buttonRow) return;
+
+      const actionsContainer = buttonRow.querySelector(".tw-flex.tw-gap-xs.tw-text-nowrap");
+      if (!actionsContainer) return;
+
+      const container = DOM.createElement("div", {
+        id: "lx-ext-documents-export-container",
+        className: "lx-ext-container-inline",
+      });
+
+      const button = DOM.createElement(
+        "button",
+        {
+          id: "lx-ext-documents-export-btn",
+          className: "lx-ext-btn-inline",
+        },
+        ["\u2B07 Export"]
+      );
+
+      const menu = DOM.createElement("div", {
+        id: "lx-ext-documents-export-menu",
+        className: "lx-ext-menu lx-ext-menu-down",
+      });
+
+      const closeMenu = function () {
+        menu.style.display = "none";
+      };
+
+      const exportModule = window.__leanixFeatures__.documentsExport;
+
+      const excelOption = createMenuOption("\u2B07 Export to Excel", function () {
+        closeMenu();
+        exportModule.exportToExcel();
+      });
+
+      menu.appendChild(excelOption);
+
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        menu.style.display = menu.style.display === "none" ? "block" : "none";
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!container.contains(event.target)) {
+          closeMenu();
+        }
+      });
+
+      container.appendChild(button);
+      container.appendChild(menu);
+
+      actionsContainer.insertBefore(container, actionsContainer.firstChild);
+    },
+
+    exportToExcel: function () {
+      const table = document.querySelector("table.table-hover");
+      if (!table) {
+        alert("Could not find the documents table on the page.");
+        return;
+      }
+
+      const headerCells = table.querySelectorAll("thead th");
+      const headers = [];
+      headerCells.forEach(function (th) {
+        const text = th.textContent.trim();
+        if (text) headers.push(text);
+      });
+
+      const dataRows = [];
+      const bodyRows = table.querySelectorAll("tbody tr.documentsItem");
+      bodyRows.forEach(function (row) {
+        const rowData = [];
+
+        const idCell = row.querySelector(".displayIdColumn");
+        rowData.push(idCell ? idCell.textContent.trim() : "");
+
+        const titleLink = row.querySelector(".titleColumn a");
+        rowData.push(titleLink ? titleLink.textContent.trim() : "");
+
+        const statusBadge = row.querySelector(".statusColumn lx-badge span");
+        rowData.push(statusBadge ? statusBadge.textContent.trim() : "");
+
+        const creatorSpan = row.querySelector(".ownerColumn lx-documents-list-creator span");
+        rowData.push(creatorSpan ? creatorSpan.textContent.trim() : "");
+
+        const dateSpan = row.querySelector(".lastUpdatedColumn span");
+        rowData.push(dateSpan ? dateSpan.textContent.trim() : "");
+
+        dataRows.push(rowData);
+      });
+
+      const rows = [];
+      if (headers.length > 0) {
+        rows.push(headers);
+      } else {
+        rows.push(["ID", "Title", "Status", "Creator", "Last Updated"]);
+      }
+      dataRows.forEach(function (dataRow) {
+        rows.push(dataRow);
+      });
+
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.aoa_to_sheet(rows);
+
+      worksheet["!cols"] = [
+        { wch: 14 },
+        { wch: 60 },
+        { wch: 12 },
+        { wch: 22 },
+        { wch: 14 },
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Documents");
+
+      const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+      const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const url = URL.createObjectURL(blob);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = url;
+      downloadLink.download = "documents-export-" + Date.now() + ".xlsx";
+      downloadLink.click();
+      URL.revokeObjectURL(url);
+    },
+  };
+
+  function createMenuOption(label, onClick) {
+    const element = document.createElement("div");
+    element.textContent = label;
+    element.className = "lx-ext-menu-item";
+    element.addEventListener("click", onClick);
+    return element;
+  }
+})();

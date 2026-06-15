@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeanIX Extension Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="options-container">
+    <header class="options-header">
+      <h1>LeanIX Custom Features &mdash; Settings</h1>
+    </header>
+
+    <main class="options-content">
+      <section class="settings-section">
+        <h2>Features</h2>
+        <p class="section-desc">Enable or disable individual custom features for the LeanIX platform.</p>
+        <div id="featureToggles"></div>
+      </section>
+
+      <section class="settings-section danger-zone">
+        <h2>Reset</h2>
+        <p class="section-desc">Restore all settings to their default values.</p>
+        <button id="resetBtn" class="btn-danger">Reset to Defaults</button>
+        <span id="resetStatus" class="status-msg"></span>
+      </section>
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
