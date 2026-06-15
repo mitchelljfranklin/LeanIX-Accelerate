@@ -19,7 +19,19 @@
 
 ---
 
-## Why Accelerate?
+### Contents
+
+[Why Accelerate?](#why-accelerate) ·
+[Features](#-features) ·
+[Quick Start](#-quick-start) ·
+[Commands](#-commands) ·
+[Contribute](#-contribute) ·
+[Privacy & Data](#-privacy--data) ·
+[License](#-license)
+
+---
+
+## Why Accelerate?<a name="why-accelerate"></a>
 
 LeanIX is powerful, but everyday workflows involve repetitive clicks — exporting tables, printing documents, downloading the same data over and over. **LeanIX Accelerate** injects one-click export buttons exactly where you need them, saving you time on every interaction.
 
@@ -28,6 +40,8 @@ LeanIX is powerful, but everyday workflows involve repetitive clicks — exporti
 | Navigate menus → find export → click → wait → repeat | One click, done |
 | Copy-paste data manually into spreadsheets | Auto-generate `.xlsx` or `.json` |
 | Screenshot or print-preview dance for documents | Formatted print with one button |
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
 ---
 
@@ -60,6 +74,8 @@ LeanIX is powerful, but everyday workflows involve repetitive clicks — exporti
   </tr>
 </table>
 
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
 ---
 
 ## 🚀 Quick Start
@@ -78,6 +94,8 @@ Then:
 
 > **Firefox users:** Run `npm run build` and load `dist/leanix-extension-firefox.zip` via `about:debugging`.
 
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
 ---
 
 ## 🛠 Commands
@@ -87,6 +105,8 @@ Then:
 | `npm run lint` | Run ESLint across `src/` |
 | `npm run lint:fix` | Auto-fix lint issues |
 | `npm run build` | Create `.zip` files for Chrome, Edge & Firefox stores |
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
 ---
 
@@ -201,6 +221,8 @@ LeanIX-Accelerate/
 - [ ] Registered in all 6 registration files
 - [ ] Tested on Chrome and Edge
 
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
 ---
 
 ## 🔒 Privacy & Data
@@ -215,6 +237,8 @@ LeanIX-Accelerate/
 - Permission `activeTab` and host permissions for `*.leanix.net` / `*.leanix.com` are required to inject the UI buttons onto LeanIX pages.
 
 You can verify all of this yourself — the source is 100% open and right here.
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
 ---
 
