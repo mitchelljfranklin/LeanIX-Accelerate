@@ -300,22 +300,24 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         className: "lx-ext-menu lx-ext-menu-down",
       });
 
-      var backdrop = document.createElement("div");
-      backdrop.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999997;display:none;";
-      backdrop.addEventListener("mousedown", function (event) {
-        event.preventDefault();
-        menu.style.display = "none";
-        backdrop.style.display = "none";
-      });
-      document.body.appendChild(backdrop);
-
       var menuOpen = false;
 
       var closeMenu = function () {
         menu.style.display = "none";
-        backdrop.style.display = "none";
         menuOpen = false;
       };
+
+      var openMenu = function () {
+        menu.style.display = "block";
+        menuOpen = true;
+      };
+
+      document.addEventListener("click", function (event) {
+        if (!menuOpen) return;
+        if (!container.contains(event.target)) {
+          closeMenu();
+        }
+      });
 
       var printExport = window.__leanixFeatures__.printExport;
       var printOption = createMenuOption("Export to Print", function () {
@@ -335,9 +337,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         if (menuOpen) {
           closeMenu();
         } else {
-          menu.style.display = "block";
-          backdrop.style.display = "block";
-          menuOpen = true;
+          openMenu();
         }
       });
 

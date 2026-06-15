@@ -15,30 +15,26 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       var menu = null;
       var pageType = null;
       var intersectionObserver = null;
-
       var menuOpen = false;
-
-      var openMenu = function () {
-        if (!menu) return;
-        menu.style.display = "block";
-        backdrop.style.display = "block";
-        menuOpen = true;
-      };
 
       var closeMenu = function () {
         if (!menu) return;
         menu.style.display = "none";
-        backdrop.style.display = "none";
         menuOpen = false;
       };
 
-      var backdrop = document.createElement("div");
-      backdrop.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999997;display:none;";
-      backdrop.addEventListener("mousedown", function (event) {
-        event.preventDefault();
-        closeMenu();
+      var openMenu = function () {
+        if (!menu) return;
+        menu.style.display = "block";
+        menuOpen = true;
+      };
+
+      document.addEventListener("click", function (event) {
+        if (!menuOpen) return;
+        if (container && !container.contains(event.target)) {
+          closeMenu();
+        }
       });
-      document.body.appendChild(backdrop);
 
       var ensureContainer = function () {
         if (container) return;
@@ -49,7 +45,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
           className: "lx-ext-container-fixed",
         });
 
-        const button = DOM.createElement(
+        var button = DOM.createElement(
           "button",
           {
             id: "lx-ext-export-btn",
@@ -63,12 +59,12 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
           className: "lx-ext-menu lx-ext-menu-up",
         });
 
-        const exportModule = window.__leanixFeatures__.dataExport;
-        const jsonOption = createMenuOption("\u2B07 Export as JSON", function () {
+        var exportModule = window.__leanixFeatures__.dataExport;
+        var jsonOption = createMenuOption("\u2B07 Export as JSON", function () {
           closeMenu();
           exportModule.exportJSON(pageType);
         });
-        const excelOption = createMenuOption("\u2B07 Export to Excel", function () {
+        var excelOption = createMenuOption("\u2B07 Export to Excel", function () {
           closeMenu();
           exportModule.exportExcel();
         });
