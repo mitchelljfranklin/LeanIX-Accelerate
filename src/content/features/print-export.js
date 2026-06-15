@@ -319,12 +319,12 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       menu.appendChild(excelOption);
 
       button.addEventListener("click", function (event) {
-        event.stopPropagation();
-          menu.style.display = menu.style.display === "none" ? "block" : "none";
+        menu.style.display = menu.style.display === "none" ? "block" : "none";
+        event.stopImmediatePropagation();
       });
 
       document.addEventListener("click", function (event) {
-        if (!container.contains(event.target)) {
+        if (container && !container.contains(event.target)) {
           closeMenu();
         }
       });
