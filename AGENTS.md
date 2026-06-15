@@ -4,6 +4,20 @@
 
 LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom export, print, and productivity features into the LeanIX enterprise architecture platform. Targets `https://*.leanix.net/*` and `https://*.leanix.com/*`.
 
+**Repo:** `https://github.com/mitchelljfranklin/LeanIX-Accelerate`
+
+## Files You Must Know About
+
+| File | Purpose |
+|---|---|
+| `README.md` | Public-facing project documentation |
+| `AGENTS.md` | This file — AI agent context and rules |
+| `SECURITY.md` | Vulnerability reporting process |
+| `LICENSE` | GPL v3.0 |
+| `manifest.json` | Chrome extension manifest (MV3) |
+| `package.json` | npm metadata, version, dev scripts |
+| `.gitignore` | Excludes `node_modules/`, `dist/`, `.DS_Store`, `*.zip`, `*.crx`, `*.pem` |
+
 ## Tech Stack
 
 - **Runtime:** Browser extension, no bundler — raw JS files loaded in manifest order
@@ -11,6 +25,15 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 - **CSS:** Single file `src/content/leanix.css`, all classes prefixed `lx-ext-`, no inline styles
 - **Lint:** ESLint + Prettier (`npm run lint`)
 - **Node:** >= 18 (dev tooling only, not needed at runtime)
+- **Vendor:** SheetJS 0.20.3 at `src/shared/xlsx.full.min.js` (registers `window.XLSX`)
+
+## Active Features
+
+| Feature | Key | File | Pages |
+|---|---|---|---|
+| Data Export | `dataExport` | `src/content/features/data-export.js` | Factsheet & Inventory |
+| Print Export | `printExport` | `src/content/features/print-export.js` | Document detail |
+| Documents Export | `documentsExport` | `src/content/features/documents-export.js` | Doc list / Architecture Decisions |
 
 ## How the Extension Works
 
@@ -19,23 +42,48 @@ Page load → content scripts injected (in manifest order)
   → storage.js loads first (defines SettingsStore)
   → dom-utils.js loads second (defines DOMUtils)
   → xlsx.full.min.js loads third (defines window.XLSX)
-  → feature files load (each registers on window.__leanixFeatures__)
+  → data-export.js (registers on window.__leanixFeatures__)
+  → print-export.js (registers on window.__leanixFeatures__)
+  → documents-export.js (registers on window.__leanixFeatures__)
   → index.js runs last:
-      1. Checks ifLeanIXPage()
+      1. Checks isLeanIXPage()
       2. Reads SettingsStore.getAll()
       3. Iterates featureOrder, calls init() on each enabled feature
 ```
 
 Each feature sets up `MutationObserver` + `IntersectionObserver` to inject buttons that survive SPA navigation.
 
-## Adding a Feature
+## Adding a Feature — Full Checklist
 
-### Step 1: Create the feature file
-```
-src/content/features/<name>.js
-```
+When adding, changing, or removing a feature, you MUST update ALL of the following:
 
-Template:
+### Code files (7 files)
+
+| # | File | Action |
+|---|---|---|
+| 1 | `src/content/features/<name>.js` | Create/delete the feature file |
+| 2 | `manifest.json` | Add/remove script from `content_scripts[0].js` array (before `index.js`) |
+| 3 | `src/content/index.js` | Add/remove key from `featureOrder` array |
+| 4 | `src/background/service-worker.js` | Add/remove `featureName: true` from default `features` object |
+| 5 | `src/shared/storage.js` | Add/remove `featureName: true` from `FEATURE_DEFAULTS` object |
+| 6 | `src/popup/popup.js` | Add/remove entry from `FEATURE_LIST` array |
+| 7 | `src/options/options.js` | Add/remove entry from `FEATURE_LIST` array |
+
+### README updates (ALWAYS REQUIRED)
+
+| Section | What to update |
+|---|---|
+| Features (`## ✨ Features`) | Add/remove a feature card in the 2×2 table |
+| Active features table in this file | Update the table above |
+| TOC (`### Contents`) | Add/remove link if you added a new section |
+| FAQ (`## ❓ FAQ`) | If the feature changes behavior users might ask about |
+| LeanIX DOM Reference (this file) | If new selectors are used |
+
+### CSS (if needed)
+- Add styles to `src/content/leanix.css` using `lx-ext-` prefix
+- Document the new class in the CSS Classes Reference table in this file
+
+### Feature file template
 ```js
 window.__leanixFeatures__ = window.__leanixFeatures__ || {};
 
@@ -63,16 +111,6 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
   }
 })();
 ```
-
-### Step 2: Register in 6 files
-| File | What to add |
-|---|---|
-| `manifest.json` | Add script to `content_scripts[0].js` array (before `index.js`) |
-| `src/content/index.js` | Add key to `featureOrder` array |
-| `src/background/service-worker.js` | Add `featureName: true` to default `features` object |
-| `src/shared/storage.js` | Add `featureName: true` to `FEATURE_DEFAULTS` object |
-| `src/popup/popup.js` | Add entry to `FEATURE_LIST` array |
-| `src/options/options.js` | Add entry to `FEATURE_LIST` array |
 
 ### SPA Navigation Pattern (required for every feature)
 ```js
@@ -196,6 +234,9 @@ if (node.matches && node.matches("selector")) { ... }
 ```
 Text nodes and comment nodes don't have `.matches`.
 
+### No data collection
+This extension runs entirely in-browser. Never add analytics, telemetry, tracking, or external requests. The Privacy & Data section of README.md makes public promises about this. Do not violate them.
+
 ## SheetJS Usage
 
 Library is at `src/shared/xlsx.full.min.js`, registers as `window.XLSX`.
@@ -215,7 +256,17 @@ var blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocumen
 `scripts/build.js` creates three zip files in `dist/`:
 - `leanix-extension-chrome.zip` — standard MV3 manifest
 - `leanix-extension-edge.zip` — identical to Chrome
-- `leanix-extension-firefox.zip` — adds `browser_specific_settings.gecko`
+- `leanix-extension-firefox.zip` — adds `browser_specific_settings.gecko` with `id: "leanix-extension@example.com"`
+
+`dist/` is gitignored.
+
+## Commands
+
+```bash
+npm run lint          # Run ESLint on src/
+npm run lint:fix      # Auto-fix lint issues
+npm run build         # Build store-ready zips for Chrome, Edge, Firefox
+```
 
 ## LeanIX DOM Reference
 
@@ -240,3 +291,24 @@ var blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocumen
 - Table: `table.table-hover`
 - Rows: `tr.documentsItem`
 - Columns: `.displayIdColumn`, `.titleColumn a`, `.statusColumn lx-badge span`, `.ownerColumn lx-documents-list-creator span`, `.lastUpdatedColumn span`
+
+## README Sections Reference
+
+When updating the README, these are the sections in order:
+
+1. Logo + Title + Tagline
+2. Badge row (version, manifest, license, browsers)
+3. Store badges (Chrome, Edge, Firefox "coming soon")
+4. Star history link
+5. Table of Contents
+6. Why Accelerate? (before/after comparison)
+7. Features (2×2 card table)
+8. Quick Start (clone + install + load steps)
+9. Supported Browsers (version table)
+10. Commands (lint, build)
+11. Contribute (ways, workflow, feature template, code conventions, project map, PR checklist)
+12. FAQ (collapsible questions)
+13. Privacy & Data
+14. Contributors (table with avatars)
+15. Security (link to SECURITY.md)
+16. License
