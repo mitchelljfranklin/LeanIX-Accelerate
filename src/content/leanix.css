@@ -113,6 +113,7 @@
   min-width: 180px;
   overflow: hidden;
   display: none;
+  z-index: 999999;
 }
 
 /*
@@ -135,7 +136,6 @@
 .lx-ext-menu-down {
   top: 100%;
   margin-top: 4px;
-  z-index: 1;
 }
 
 
