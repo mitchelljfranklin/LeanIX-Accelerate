@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "LeanIX Custom Features",
+  "name": "LeanIX Accelerate",
   "version": "1.0.0",
-  "description": "Custom feature enhancements for the LeanIX enterprise architecture platform.",
+  "description": "Unlock new levels of efficiency and productivity — the ultimate browser extension for LeanIX users.",
   "icons": {
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
