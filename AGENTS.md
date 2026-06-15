@@ -341,7 +341,8 @@ When updating the README, these are the sections in order:
 13. Privacy & Data
 14. Contributors (table with avatars)
 15. Security (link to SECURITY.md)
-16. License
+16. Disclaimer
+17. License
 
 ## User Guide Sections Reference
 

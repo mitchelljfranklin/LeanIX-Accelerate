@@ -18,6 +18,8 @@ LeanIX Accelerate runs entirely in your browser. No data is collected, transmitt
 
 100% open source — verify it yourself at github.com/mitchelljfranklin/LeanIX-Accelerate
 
+⚠️ Disclaimer — LeanIX Accelerate is an independent, community-built extension. SAP LeanIX has no association with this extension and does not sanction its use. SAP LeanIX does not offer any guarantees or warranties in relation to its functionality.
+
 ---
 
 🔐 Permission Justifications

@@ -42,6 +42,7 @@
 - [Privacy & Data](#-privacy--data)
 - [Contributors](#-contributors)
 - [Security](#-security)
+- [Disclaimer](#-disclaimer)
 - [License](#-license)
 
 ---
@@ -376,6 +377,14 @@ Want to see your name here? Check out the [Contribute](#-contribute) section.
 ## 🔐 Security
 
 Found a vulnerability? Please **do not** open a public issue. Instead, see [SECURITY.md](SECURITY.md) for responsible disclosure.
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
+## ⚠️ Disclaimer
+
+LeanIX Accelerate is an independent, community-built extension. SAP LeanIX has no association with this extension and does not sanction its use. SAP LeanIX does not offer any guarantees or warranties in relation to its functionality. Use at your own discretion.
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
