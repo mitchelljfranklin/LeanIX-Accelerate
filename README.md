@@ -80,34 +80,6 @@ Then:
 
 ---
 
-## 📦 Project Structure
-
-```
-LeanIX-Accelerate/
-├── manifest.json                  # Chrome MV3 manifest
-├── package.json                   # Dev scripts & deps
-├── icons/                         # 16/48/128px extension icons
-├── scripts/build.js               # Store-ready zip builder
-├── docs/                          # Screenshots, logo, store assets
-└── src/
-    ├── background/service-worker.js   # Settings init & message routing
-    ├── shared/
-    │   ├── storage.js                 # chrome.storage.sync wrapper
-    │   ├── dom-utils.js               # DOM helpers & element factory
-    │   └── xlsx.full.min.js           # SheetJS for .xlsx generation
-    ├── content/
-    │   ├── index.js                   # Feature loader & orchestrator
-    │   ├── leanix.css                 # All extension UI styles
-    │   └── features/
-    │       ├── data-export.js         # Table → JSON/Excel
-    │       ├── print-export.js        # Document → Print/Excel
-    │       └── documents-export.js    # Doc list → Excel
-    ├── popup/                         # Extension toolbar popup
-    └── options/                       # Full settings page
-```
-
----
-
 ## 🛠 Commands
 
 | Command | What it does |
@@ -118,9 +90,116 @@ LeanIX-Accelerate/
 
 ---
 
-## 🔧 How It Works
+## 🤝 Contribute
 
-Each feature watches for its target DOM element using `MutationObserver` (for SPA navigation resilience) and `IntersectionObserver` (for visibility detection). When the right element appears, the feature injects a styled button with a dropdown menu. All settings persist via `chrome.storage.sync`.
+LeanIX Accelerate is built for practitioners, by practitioners. Found a bug? Have a feature idea? Know a page that needs an export button? Contributions are welcome.
+
+### Ways to contribute
+- **Report a bug** — [Open an issue](https://github.com/mitchelljfranklin/LeanIX-Accelerate/issues/new) describing what broke and where
+- **Request a feature** — Describe the workflow friction and what button/export would solve it
+- **Submit a PR** — Fork, branch, code, and open a pull request (see below)
+- **Share selectors** — Know the DOM structure of a LeanIX page that needs love? Drop it in an issue with the relevant HTML
+
+### Development workflow
+
+```bash
+git clone https://github.com/mitchelljfranklin/LeanIX-Accelerate.git
+cd LeanIX-Accelerate
+npm install
+```
+
+Load the extension unpacked in Chrome/Edge:
+1. `chrome://extensions` → **Developer mode** on
+2. **Load unpacked** → select the project folder
+3. Make changes → click the reload icon on the extension card
+4. Refresh your LeanIX page
+
+### Adding a new feature
+
+Every feature follows the same pattern. Here's the checklist:
+
+**1. Create the feature file** at `src/content/features/<name>.js`
+
+```js
+window.__leanixFeatures__ = window.__leanixFeatures__ || {};
+
+(function () {
+  window.__leanixFeatures__.myFeature = {
+    init: function (DOM, settings) {
+      // MutationObserver + IntersectionObserver to survive SPA nav
+    },
+    addButton: function (DOM) {
+      // Guard with document.getElementById to prevent duplicates
+      // Use DOM.createElement with className, never inline styles
+    },
+    // ... export methods
+  };
+})();
+```
+
+**2. Register in 6 files:**
+
+| File | Add |
+|---|---|
+| `manifest.json` | Script to `content_scripts[0].js` array (before `index.js`) |
+| `src/content/index.js` | Key to `featureOrder` array |
+| `src/background/service-worker.js` | `featureName: true` to default `features` object |
+| `src/shared/storage.js` | `featureName: true` to `FEATURE_DEFAULTS` |
+| `src/popup/popup.js` | Entry to `FEATURE_LIST` array |
+| `src/options/options.js` | Entry to `FEATURE_LIST` array |
+
+**3. Add CSS** to `src/content/leanix.css` using the `lx-ext-` prefix. No inline styles.
+
+**4. Lint before committing:** `npm run lint`
+
+### Code conventions
+- **JS style**: `function` keyword, `const`/`let`, IIFEs — no arrow functions in object methods
+- **CSS**: All styles in `leanix.css` with `lx-ext-` prefix — zero inline styles
+- **SPA resilience**: Every feature MUST use `MutationObserver` + `IntersectionObserver` (see existing features for the pattern)
+- **Button guards**: Check `document.getElementById()` before injecting
+- **Menu toggling**: Use `"block"` / `"none"` — never empty string (won't override CSS)
+- **Vendor library**: SheetJS (`XLSX`) at `src/shared/xlsx.full.min.js` for `.xlsx` generation
+
+### Project as a map
+
+```
+LeanIX-Accelerate/
+│
+├── manifest.json              ← Extension identity, permissions, script order
+├── package.json               ← npm scripts: lint, build
+│
+├── src/
+│   ├── background/
+│   │   └── service-worker.js  ← Installs defaults, routes messages, logs pages
+│   │
+│   ├── shared/
+│   │   ├── storage.js         ← SettingsStore class — get/set feature toggles
+│   │   ├── dom-utils.js       ← DOMUtils — createElement, waitForElement, etc.
+│   │   └── xlsx.full.min.js   ← SheetJS for .xlsx file generation
+│   │
+│   ├── content/
+│   │   ├── index.js           ← Entry point — loads features in order
+│   │   ├── leanix.css         ← ALL extension UI styles (lx-ext- prefix)
+│   │   └── features/
+│   │       ├── data-export.js      ← Facts table → JSON / native Excel
+│   │       ├── print-export.js     ← Document → Print / Excel workbook
+│   │       └── documents-export.js ← Doc list → Excel spreadsheet
+│   │
+│   ├── popup/                 ← Extension icon click → toggle features
+│   └── options/               ← Full settings page → toggle + reset
+│
+├── icons/                     ← 16/48/128px extension icons
+├── scripts/build.js           ← npm run build → dist/*.zip for stores
+└── docs/                      ← Screenshots, logo, store listing assets
+```
+
+### Before you PR
+- [ ] `npm run lint` passes
+- [ ] Feature survives SPA navigation (navigate away and back — button reappears)
+- [ ] Button has unique `id`, guarded with `document.getElementById`
+- [ ] No inline styles — everything in `leanix.css`
+- [ ] Registered in all 6 registration files
+- [ ] Tested on Chrome and Edge
 
 ---
 
