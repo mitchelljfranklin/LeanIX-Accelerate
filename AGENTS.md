@@ -213,6 +213,7 @@ SettingsStore.onChange(callback)     // listens for storage changes
 | `.lx-ext-menu-up` | data-export | Menu opens upward (button at bottom of viewport) |
 | `.lx-ext-menu-down` | print-export, documents-export | Menu opens downward (button in header) |
 | `.lx-ext-menu-item` | all three | Clickable menu option with hover highlight |
+| `.lx-ext-toast` | all three | Download notification toast (slide-up, auto-dismiss) |
 
 ## Critical Rules
 
@@ -253,6 +254,15 @@ When checking `MutationObserver` added nodes, guard `node.matches`:
 if (node.matches && node.matches("selector")) { ... }
 ```
 Text nodes and comment nodes don't have `.matches`.
+
+### Always toast on export
+Every export/download action MUST call `DOMUtils.showToast()` as its first line so users get immediate visual feedback.
+```js
+exportJSON: function (pageType) {
+  DOMUtils.showToast("Preparing download\u2026");
+  // ... export logic
+}
+```
 
 ### No data collection
 This extension runs entirely in-browser. Never add analytics, telemetry, tracking, or external requests. The Privacy & Data section of README.md makes public promises about this. Do not violate them.

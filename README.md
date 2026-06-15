@@ -216,7 +216,10 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       // Guard with document.getElementById to prevent duplicates
       // Use DOM.createElement with className, never inline styles
     },
-    // ... export methods
+    myExportAction: function () {
+      DOMUtils.showToast("Starting export\u2026");   // toast for user feedback
+      // ... export logic
+    },
   };
 })();
 ```
@@ -241,7 +244,8 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
 - **CSS**: All styles in `leanix.css` with `lx-ext-` prefix — zero inline styles
 - **SPA resilience**: Every feature MUST use `MutationObserver` + `IntersectionObserver` (see existing features for the pattern)
 - **Button guards**: Check `document.getElementById()` before injecting
-- **Menu toggling**: Use `"block"` / `"none"` — never empty string (won't override CSS)
+- **Menu toggling**: Use a boolean `menuOpen` flag — never check `element.style.display` (it only reads inline styles, not CSS class values)
+- **Export feedback**: Call `DOMUtils.showToast("message")` at the start of every export action so users see immediate confirmation
 - **Vendor library**: SheetJS (`XLSX`) at `src/shared/xlsx.full.min.js` for `.xlsx` generation
 
 ### Project as a map
