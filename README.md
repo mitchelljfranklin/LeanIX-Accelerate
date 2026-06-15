@@ -33,6 +33,7 @@
 
 - [Why Accelerate?](#why-accelerate)
 - [Features](#-features)
+- [User Guide](#-user-guide)
 - [Quick Start](#-quick-start)
 - [Supported Browsers](#-supported-browsers)
 - [Commands](#-commands)
@@ -87,6 +88,19 @@ LeanIX is powerful, but everyday workflows involve repetitive clicks — exporti
     </td>
   </tr>
 </table>
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
+## 📖 User Guide
+
+Need help using the extension? The **[User Guide](docs/USERGUIDE.md)** covers every feature in detail:
+
+- Step-by-step instructions for each export tool
+- What's included in Excel and Print exports
+- Troubleshooting common issues
+- Tips for getting the most out of each feature
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
