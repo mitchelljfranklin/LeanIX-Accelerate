@@ -1,130 +1,129 @@
-# LeanIX Accelerate
+<p align="center">
+  <img src="docs/LeanIXAcc Logo.png" alt="LeanIX Accelerate" width="128" />
+</p>
 
-Browser extension (Manifest V3) that supercharges the LeanIX enterprise architecture platform with export, print, and productivity features.
+<h1 align="center">LeanIX Accelerate</h1>
 
-## Features
+<p align="center">
+  Unlock new levels of efficiency and productivity — the ultimate browser extension for LeanIX users.
+</p>
 
-### Data Export
-**Where:** Factsheet and inventory pages with the `lx-factsheets-table` element visible.
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-5c6ac4?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/manifest-v3-blue?style=flat-square" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/badge/chrome-✔-4285F4?style=flat-square&logo=googlechrome&logoColor=white" alt="Chrome" />
+  <img src="https://img.shields.io/badge/edge-✔-0078D7?style=flat-square&logo=microsoftedge&logoColor=white" alt="Edge" />
+  <img src="https://img.shields.io/badge/firefox-✔-FF7139?style=flat-square&logo=firefox&logoColor=white" alt="Firefox" />
+</p>
 
-Adds a floating Export button (bottom-right). Dropdown options:
-- **Export as JSON** — Downloads structured JSON of all visible fields (factsheet) or table rows (inventory)
-- **Export to Excel** — Clicks the native LeanIX "Inventory Tools > Export to Excel" menu item
+---
 
-The button appears/hides reactively as you navigate between views. Falls back to a generic page export when no specific data is available.
+## Why Accelerate?
 
-### Print Export
-**Where:** Document detail pages with `lx-document-fields-form` visible.
+LeanIX is powerful, but everyday workflows involve repetitive clicks — exporting tables, printing documents, downloading the same data over and over. **LeanIX Accelerate** injects one-click export buttons exactly where you need them, saving you time on every interaction.
 
-Adds an Export button in the document header bar (next to the Edit/Close buttons). Dropdown options:
-- **Export to Print** — Opens a formatted HTML document with all sections (rich text editor blocks, dates, fact sheet lists, user lists) and triggers browser print dialog for PDF/paper output
-- **Export to Excel** — Downloads a proper `.xlsx` workbook with all document sections as labeled rows using SheetJS
+| Without Accelerate | With Accelerate |
+|---|---|
+| Navigate menus → find export → click → wait → repeat | One click, done |
+| Copy-paste data manually into spreadsheets | Auto-generate `.xlsx` or `.json` |
+| Screenshot or print-preview dance for documents | Formatted print with one button |
 
-### Documents Export
-**Where:** Architecture Decisions and other document list pages with `table.table-hover`.
+---
 
-Adds an Export button in the page header button group (next to "New Decision"). Downloads the visible document list (ID, Title, Status, Creator, Last Updated) as a `.xlsx` file.
+## ✨ Features
 
-### Popup
-Click the extension icon to toggle individual features on/off without opening the full settings page. Includes a "Reload Page" button to apply changes immediately.
+<table>
+  <tr>
+    <td width="50%">
+      <h3>📊 Data Export</h3>
+      <p><strong>Factsheet & Inventory pages</strong></p>
+      <p>Floating export button appears automatically. Export table data as <strong>JSON</strong> or trigger the native <strong>Excel</strong> export in one click.</p>
+    </td>
+    <td width="50%">
+      <h3>📄 Document Export</h3>
+      <p><strong>Document detail pages</strong></p>
+      <p>Export button injected into the document header. <strong>Print to PDF</strong> with full formatting, or download a structured <strong>Excel workbook</strong> with all sections, dates, fact sheet lists, and users.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>📋 Document List Export</h3>
+      <p><strong>Architecture Decisions & list pages</strong></p>
+      <p>Export button in the page header. Downloads the visible document list — <strong>ID, Title, Status, Creator, Last Updated</strong> — as a clean <code>.xlsx</code> spreadsheet.</p>
+    </td>
+    <td width="50%">
+      <h3>⚙️ Smart Controls</h3>
+      <p><strong>Popup & full settings page</strong></p>
+      <p>Toggle any feature on/off from the extension popup. Full settings panel with reset-to-defaults. Buttons survive page navigation — no reloads needed.</p>
+    </td>
+  </tr>
+</table>
 
-### Options
-Full settings page accessible via the popup's "Configure" button or `chrome://extensions` > Details > Extension options. Toggle individual features and reset all settings to defaults.
+---
 
-## Project Structure
+## 🚀 Quick Start
+
+```bash
+git clone https://github.com/mitchelljfranklin/LeanIX-Accelerate.git
+cd LeanIX-Accelerate
+npm install
+```
+
+Then:
+1. Open `chrome://extensions` in Chrome or Edge
+2. Enable **Developer mode** (top-right)
+3. Click **Load unpacked** → select the project folder
+4. Navigate to your LeanIX instance — buttons appear automatically
+
+> **Firefox users:** Run `npm run build` and load `dist/leanix-extension-firefox.zip` via `about:debugging`.
+
+---
+
+## 📦 Project Structure
 
 ```
-leanix-extension/
-├── .gitignore
-├── AGENTS.md                       # AI agent context and development guide
-├── LICENSE                         # GPL v3
-├── README.md                       # This file
-├── manifest.json                   # Chrome MV3 extension manifest
-├── package.json                    # Dev dependencies and scripts
-├── icons/                          # Extension icons (16px, 48px, 128px)
-├── scripts/
-│   └── build.js                    # Builds store-ready zip files
-├── docs/                           # Screenshots and store listing assets
+LeanIX-Accelerate/
+├── manifest.json                  # Chrome MV3 manifest
+├── package.json                   # Dev scripts & deps
+├── icons/                         # 16/48/128px extension icons
+├── scripts/build.js               # Store-ready zip builder
+├── docs/                          # Screenshots, logo, store assets
 └── src/
-    ├── background/
-    │   └── service-worker.js       # Settings init, message router, tab logging
+    ├── background/service-worker.js   # Settings init & message routing
     ├── shared/
-    │   ├── storage.js              # SettingsStore class (chrome.storage.sync wrapper)
-    │   ├── dom-utils.js            # DOMUtils: waitForElement, createElement, etc.
-    │   └── xlsx.full.min.js        # SheetJS 0.20.3 (vendor)
+    │   ├── storage.js                 # chrome.storage.sync wrapper
+    │   ├── dom-utils.js               # DOM helpers & element factory
+    │   └── xlsx.full.min.js           # SheetJS for .xlsx generation
     ├── content/
-    │   ├── index.js                # Entry point — loads enabled features
-    │   ├── leanix.css              # All extension UI styles
+    │   ├── index.js                   # Feature loader & orchestrator
+    │   ├── leanix.css                 # All extension UI styles
     │   └── features/
-    │       ├── data-export.js      # Factsheet/inventory table export
-    │       ├── print-export.js     # Document print and Excel export
-    │       └── documents-export.js # Document list Excel export
-    ├── popup/
-    │   ├── popup.html
-    │   ├── popup.js
-    │   └── popup.css
-    └── options/
-        ├── options.html
-        ├── options.js
-        └── options.css
+    │       ├── data-export.js         # Table → JSON/Excel
+    │       ├── print-export.js        # Document → Print/Excel
+    │       └── documents-export.js    # Doc list → Excel
+    ├── popup/                         # Extension toolbar popup
+    └── options/                       # Full settings page
 ```
 
-## Installation
+---
 
-### Development
-1. `npm install`
-2. Open `chrome://extensions` in Chrome/Edge
-3. Enable **Developer mode** (top-right toggle)
-4. Click **Load unpacked** and select the project root
-5. The extension activates on `*.leanix.net` and `*.leanix.com`
+## 🛠 Commands
 
-### Reload After Changes
-Click the reload icon on the extension card in `chrome://extensions`, then refresh the LeanIX page.
-
-## Commands
-
-| Command | Description |
+| Command | What it does |
 |---|---|
-| `npm run lint` | Run ESLint on `src/` |
+| `npm run lint` | Run ESLint across `src/` |
 | `npm run lint:fix` | Auto-fix lint issues |
-| `npm run build` | Build store-ready zip files for Chrome, Edge, Firefox |
+| `npm run build` | Create `.zip` files for Chrome, Edge & Firefox stores |
 
-## Build Output
+---
 
-`npm run build` creates three zip files in `dist/`:
+## 🔧 How It Works
 
-| File | Notes |
-|---|---|
-| `leanix-extension-chrome.zip` | Chrome Web Store |
-| `leanix-extension-edge.zip` | Edge Add-ons (identical to Chrome) |
-| `leanix-extension-firefox.zip` | Firefox Add-ons (adds `browser_specific_settings.gecko`) |
+Each feature watches for its target DOM element using `MutationObserver` (for SPA navigation resilience) and `IntersectionObserver` (for visibility detection). When the right element appears, the feature injects a styled button with a dropdown menu. All settings persist via `chrome.storage.sync`.
 
-## Architecture
+---
 
-### Feature System
-Each feature is an IIFE that attaches to `window.__leanixFeatures__`:
-
-```js
-window.__leanixFeatures__.myFeature = {
-  init: function (DOM, settings) { /* setup observers, inject buttons */ }
-};
-```
-
-The entry point (`src/content/index.js`) reads enabled features from `SettingsStore` and calls each `init()` in order.
-
-### Settings Storage
-Settings are persisted via `chrome.storage.sync` under the key `leanix_extension_settings`. The `SettingsStore` class provides get/set/reset methods and a change listener.
-
-### SPA Navigation Resilience
-All features handle LeanIX's single-page navigation by:
-1. Checking if the target DOM element already exists
-2. Watching `document.body` with `MutationObserver` for re-added elements
-3. Using `IntersectionObserver` for visibility toggling
-4. Guarding button injection with unique IDs to prevent duplicates
-
-### CSS Conventions
-All extension styles use the `lx-ext-` prefix and live in a single `leanix.css` file. No inline styles anywhere. Menu visibility is toggled via JS `element.style.display = "block"/"none"` (must explicitly override CSS `display: none` with a value, never empty string).
-
-## License
+## 📄 License
 
 [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html)
