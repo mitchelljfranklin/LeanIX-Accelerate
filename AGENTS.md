@@ -11,6 +11,7 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 | File | Purpose |
 |---|---|
 | `README.md` | Public-facing project documentation |
+| `docs/USERGUIDE.md` | End-user guide for extension features |
 | `AGENTS.md` | This file — AI agent context and rules |
 | `SECURITY.md` | Vulnerability reporting process |
 | `LICENSE` | GPL v3.0 |
@@ -69,15 +70,15 @@ When adding, changing, or removing a feature, you MUST update ALL of the followi
 | 6 | `src/popup/popup.js` | Add/remove entry from `FEATURE_LIST` array |
 | 7 | `src/options/options.js` | Add/remove entry from `FEATURE_LIST` array |
 
-### README updates (ALWAYS REQUIRED)
+### README & docs updates (ALWAYS REQUIRED)
 
-| Section | What to update |
-|---|---|
-| Features (`## ✨ Features`) | Add/remove a feature card in the 2×2 table |
-| Active features table in this file | Update the table above |
-| TOC (`### Contents`) | Add/remove link if you added a new section |
-| FAQ (`## ❓ FAQ`) | If the feature changes behavior users might ask about |
-| LeanIX DOM Reference (this file) | If new selectors are used |
+| File | Section | What to update |
+|---|---|---|
+| `README.md` | `## ✨ Features` | Add/remove a feature card in the 2×2 table |
+| `README.md` | `### Contents` | Add/remove link if you added a section |
+| `README.md` | `## ❓ FAQ` | If feature changes behavior users might ask about |
+| `docs/USERGUIDE.md` | Feature section | Add/update the feature's usage instructions, tips, and what-to-expect |
+| `docs/USERGUIDE.md` | `## Troubleshooting` | If the feature introduces new failure modes |
 
 ### CSS (if needed)
 - Add styles to `src/content/leanix.css` using `lx-ext-` prefix
@@ -312,3 +313,17 @@ When updating the README, these are the sections in order:
 14. Contributors (table with avatars)
 15. Security (link to SECURITY.md)
 16. License
+
+## User Guide Sections Reference
+
+When updating `docs/USERGUIDE.md`, these are the sections in order:
+
+1. Getting Started (install, popup overview)
+2. Feature: Data Export (where, what, how, tips)
+3. Feature: Print Export (where, what, included content, tips)
+4. Feature: Documents Export (where, what, columns, tips)
+5. Full Settings Page
+6. Troubleshooting
+7. Privacy
+
+Any new feature gets its own section between #4 and #5 above, following the same template pattern (where it works, what it does, how to use with option table, what's included, tips).
