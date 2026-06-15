@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/LeanIXAcc Logo.png" alt="LeanIX Accelerate" width="128" />
+  <img src="docs/LeanIXAcc%20Logo.png" alt="LeanIX Accelerate" width="128" />
 </p>
 
 <h1 align="center">LeanIX Accelerate</h1>
@@ -9,12 +9,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-5c6ac4?style=flat-square" alt="Version" />
-  <img src="https://img.shields.io/badge/manifest-v3-blue?style=flat-square" alt="Manifest V3" />
-  <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square" alt="License" />
-  <img src="https://img.shields.io/badge/chrome-✔-4285F4?style=flat-square&logo=googlechrome&logoColor=white" alt="Chrome" />
-  <img src="https://img.shields.io/badge/edge-✔-0078D7?style=flat-square&logo=microsoftedge&logoColor=white" alt="Edge" />
-  <img src="https://img.shields.io/badge/firefox-✔-FF7139?style=flat-square&logo=firefox&logoColor=white" alt="Firefox" />
+  <img src="https://img.shields.io/badge/version-1.0.0-5c6ac4" alt="Version" />
+  <img src="https://img.shields.io/badge/manifest-v3-blue" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/license-GPL%203.0-green" alt="License" />
+  <img src="https://img.shields.io/badge/chrome-yes-4285F4?logo=googlechrome&logoColor=white" alt="Chrome" />
+  <img src="https://img.shields.io/badge/edge-yes-0078D7?logo=microsoftedge&logoColor=white" alt="Edge" />
+  <img src="https://img.shields.io/badge/firefox-yes-FF7139?logo=firefox&logoColor=white" alt="Firefox" />
 </p>
 
 ---
