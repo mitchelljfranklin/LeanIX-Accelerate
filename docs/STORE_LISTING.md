@@ -17,3 +17,15 @@ Unlock new levels of efficiency and productivity with one-click export buttons i
 LeanIX Accelerate runs entirely in your browser. No data is collected, transmitted, or stored externally. No analytics, no telemetry, no tracking. The only data stored is your feature-toggle preferences, saved locally via chrome.storage.sync.
 
 100% open source — verify it yourself at github.com/mitchelljfranklin/LeanIX-Accelerate
+
+---
+
+🔐 Permission Justifications
+
+Storage — Saves your feature-toggle preferences via chrome.storage.sync so settings persist and sync across devices you're signed into. No other data is stored.
+
+Active Tab — Reads the current page URL to determine which LeanIX page you're on so the right export buttons appear on the right pages. Does not access all tabs.
+
+Clipboard Write — Declared for planned copy-to-clipboard functionality. Not currently used by any feature.
+
+Host Permission (*.leanix.net / *.leanix.com) — Required to inject export buttons onto LeanIX pages. Limited to LeanIX domains only — no other websites are accessed.
