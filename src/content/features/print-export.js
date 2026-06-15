@@ -278,15 +278,15 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     addExportButton: function (DOM) {
-      const header = document.querySelector(".headerUpdates");
+      var header = document.querySelector(".headerUpdates");
       if (!header || document.getElementById("lx-ext-print-btn")) return;
 
-      const container = DOM.createElement("div", {
+      var container = DOM.createElement("div", {
         id: "lx-ext-print-container",
         className: "lx-ext-container-inline",
       });
 
-      const button = DOM.createElement(
+      var button = DOM.createElement(
         "button",
         {
           id: "lx-ext-print-btn",
@@ -295,22 +295,32 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         ["Export"]
       );
 
-      const menu = DOM.createElement("div", {
+      var menu = DOM.createElement("div", {
         id: "lx-ext-print-menu",
         className: "lx-ext-menu lx-ext-menu-down",
       });
 
-      const closeMenu = function () {
+      var backdrop = document.createElement("div");
+      backdrop.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999997;display:none;";
+      backdrop.addEventListener("mousedown", function (event) {
+        event.preventDefault();
         menu.style.display = "none";
+        backdrop.style.display = "none";
+      });
+      document.body.appendChild(backdrop);
+
+      var closeMenu = function () {
+        menu.style.display = "none";
+        backdrop.style.display = "none";
       };
 
-      const printExport = window.__leanixFeatures__.printExport;
-      const printOption = createMenuOption("Export to Print", function () {
+      var printExport = window.__leanixFeatures__.printExport;
+      var printOption = createMenuOption("Export to Print", function () {
         closeMenu();
         printExport.exportPrint();
       });
 
-      const excelOption = createMenuOption("Export to Excel", function () {
+      var excelOption = createMenuOption("Export to Excel", function () {
         closeMenu();
         printExport.exportExcel();
       });
@@ -318,17 +328,11 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       menu.appendChild(printOption);
       menu.appendChild(excelOption);
 
-      var toggleGuard = false;
-
-      button.addEventListener("mousedown", function () {
-        menu.style.display = menu.style.display === "none" ? "block" : "none";
-        toggleGuard = true;
-        setTimeout(function () { toggleGuard = false; }, 0);
-      });
-
-      document.addEventListener("mousedown", function (event) {
-        if (toggleGuard) return;
-        if (container && !container.contains(event.target)) {
+      button.addEventListener("click", function () {
+        if (menu.style.display === "none") {
+          menu.style.display = "block";
+          backdrop.style.display = "block";
+        } else {
           closeMenu();
         }
       });

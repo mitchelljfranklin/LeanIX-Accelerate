@@ -11,24 +11,32 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     addExportButton: function (DOM) {
-      let container = null;
-      let menu = null;
-      let pageType = null;
-      let intersectionObserver = null;
-      var toggleGuard = false;
+      var container = null;
+      var menu = null;
+      var pageType = null;
+      var intersectionObserver = null;
 
-      const closeMenu = function () {
-        if (menu) menu.style.display = "none";
+      var openMenu = function () {
+        if (!menu) return;
+        menu.style.display = "block";
+        backdrop.style.display = "block";
       };
 
-      document.addEventListener("mousedown", function (event) {
-        if (toggleGuard) return;
-        if (container && !container.contains(event.target)) {
-          closeMenu();
-        }
-      });
+      var closeMenu = function () {
+        if (!menu) return;
+        menu.style.display = "none";
+        backdrop.style.display = "none";
+      };
 
-      const ensureContainer = function () {
+      var backdrop = document.createElement("div");
+      backdrop.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999997;display:none;";
+      backdrop.addEventListener("mousedown", function (event) {
+        event.preventDefault();
+        closeMenu();
+      });
+      document.body.appendChild(backdrop);
+
+      var ensureContainer = function () {
         if (container) return;
         pageType = DOM.getPageType();
 
@@ -64,10 +72,12 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         menu.appendChild(jsonOption);
         menu.appendChild(excelOption);
 
-        button.addEventListener("mousedown", function () {
-          menu.style.display = menu.style.display === "none" ? "block" : "none";
-          toggleGuard = true;
-          setTimeout(function () { toggleGuard = false; }, 0);
+        button.addEventListener("click", function () {
+          if (menu.style.display === "none") {
+            openMenu();
+          } else {
+            closeMenu();
+          }
         });
 
         container.appendChild(menu);

@@ -39,21 +39,21 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     },
 
     addExportButton: function (DOM) {
-      const headerTitle = document.querySelector('[data-testid="header-title"]');
+      var headerTitle = document.querySelector('[data-testid="header-title"]');
       if (!headerTitle || document.getElementById("lx-ext-documents-export-btn")) return;
 
-      const buttonRow = headerTitle.closest(".tw-flex.tw-min-h-xxl");
+      var buttonRow = headerTitle.closest(".tw-flex.tw-min-h-xxl");
       if (!buttonRow) return;
 
-      const actionsContainer = buttonRow.querySelector(".tw-flex.tw-gap-xs.tw-text-nowrap");
+      var actionsContainer = buttonRow.querySelector(".tw-flex.tw-gap-xs.tw-text-nowrap");
       if (!actionsContainer) return;
 
-      const container = DOM.createElement("div", {
+      var container = DOM.createElement("div", {
         id: "lx-ext-documents-export-container",
         className: "lx-ext-container-inline",
       });
 
-      const button = DOM.createElement(
+      var button = DOM.createElement(
         "button",
         {
           id: "lx-ext-documents-export-btn",
@@ -62,35 +62,39 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         ["\u2B07 Export"]
       );
 
-      const menu = DOM.createElement("div", {
+      var menu = DOM.createElement("div", {
         id: "lx-ext-documents-export-menu",
         className: "lx-ext-menu lx-ext-menu-down",
       });
 
-      const closeMenu = function () {
+      var backdrop = document.createElement("div");
+      backdrop.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999997;display:none;";
+      backdrop.addEventListener("mousedown", function (event) {
+        event.preventDefault();
         menu.style.display = "none";
+        backdrop.style.display = "none";
+      });
+      document.body.appendChild(backdrop);
+
+      var closeMenu = function () {
+        menu.style.display = "none";
+        backdrop.style.display = "none";
       };
 
-      const exportModule = window.__leanixFeatures__.documentsExport;
+      var exportModule = window.__leanixFeatures__.documentsExport;
 
-      const excelOption = createMenuOption("\u2B07 Export to Excel", function () {
+      var excelOption = createMenuOption("\u2B07 Export to Excel", function () {
         closeMenu();
         exportModule.exportToExcel();
       });
 
       menu.appendChild(excelOption);
 
-      var toggleGuard = false;
-
-      button.addEventListener("mousedown", function () {
-        menu.style.display = menu.style.display === "none" ? "block" : "none";
-        toggleGuard = true;
-        setTimeout(function () { toggleGuard = false; }, 0);
-      });
-
-      document.addEventListener("mousedown", function (event) {
-        if (toggleGuard) return;
-        if (!container.contains(event.target)) {
+      button.addEventListener("click", function () {
+        if (menu.style.display === "none") {
+          menu.style.display = "block";
+          backdrop.style.display = "block";
+        } else {
           closeMenu();
         }
       });
