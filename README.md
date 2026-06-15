@@ -343,7 +343,6 @@ Absolutely. Use the [feature request template](#submitting-a-great-feature-reque
 - No analytics, no telemetry, no tracking, no external servers.
 - No third-party services are contacted at runtime (the only external requests made are those already present on your LeanIX page).
 - The only data stored is your feature-toggle preferences, saved locally via `chrome.storage.sync` so they follow you across browsers you're signed into.
-- Permission `clipboardWrite` is declared solely for potential future copy-to-clipboard functionality — it is not currently used.
 - Permission `activeTab` and host permissions for `*.leanix.net` / `*.leanix.com` are required to inject the UI buttons onto LeanIX pages.
 
 You can verify all of this yourself — the source is 100% open and right here.

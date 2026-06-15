@@ -10,8 +10,7 @@
   },
   "permissions": [
     "storage",
-    "activeTab",
-    "clipboardWrite"
+    "activeTab"
   ],
   "host_permissions": [
     "https://*.leanix.net/*",

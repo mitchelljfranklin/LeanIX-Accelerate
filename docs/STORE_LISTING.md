@@ -26,6 +26,4 @@ Storage — Saves your feature-toggle preferences via chrome.storage.sync so set
 
 Active Tab — Reads the current page URL to determine which LeanIX page you're on so the right export buttons appear on the right pages. Does not access all tabs.
 
-Clipboard Write — Declared for planned copy-to-clipboard functionality. Not currently used by any feature.
-
 Host Permission (*.leanix.net / *.leanix.com) — Required to inject export buttons onto LeanIX pages. Limited to LeanIX domains only — no other websites are accessed.
