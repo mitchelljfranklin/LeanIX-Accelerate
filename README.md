@@ -9,18 +9,18 @@
 </p>
 
 <p align="center">
-  <code>🔖 v1.0.0</code>
-  <code>🧩 Manifest V3</code>
-  <code>📜 GPL 3.0</code>
-  <code>🌐 Chrome</code>
-  <code>🌐 Edge</code>
-  <code>🌐 Firefox</code>
+  <img src="https://img.shields.io/badge/version-v1.0.0-blue" />
+  <img src="https://img.shields.io/badge/manifest-V3-4c1" />
+  <img src="https://img.shields.io/badge/license-GPL%203.0-brightgreen" />
+  <img src="https://img.shields.io/badge/Chrome-supported-4285F4?logo=googlechrome&logoColor=white" />
+  <img src="https://img.shields.io/badge/Edge-supported-0078D7?logo=microsoftedge&logoColor=white" />
+  <!-- <img src="https://img.shields.io/badge/Firefox-supported-FF7139?logo=firefox&logoColor=white" /> -->
 </p>
 
 <p align="center">
   <a href="https://chromewebstore.google.com"><img src="https://img.shields.io/badge/Chrome-coming%20soon-4285F4?logo=googlechrome&logoColor=white" /></a>
   <a href="https://microsoftedge.microsoft.com/addons"><img src="https://img.shields.io/badge/Edge-coming%20soon-0078D7?logo=microsoftedge&logoColor=white" /></a>
-  <a href="https://addons.mozilla.org"><img src="https://img.shields.io/badge/Firefox-coming%20soon-FF7139?logo=firefox&logoColor=white" /></a>
+  <!-- <a href="https://addons.mozilla.org"><img src="https://img.shields.io/badge/Firefox-coming%20soon-FF7139?logo=firefox&logoColor=white" /></a> -->
 </p>
 
 <p align="center">
@@ -121,7 +121,7 @@ Then:
 3. Click **Load unpacked** → select the project folder
 4. Navigate to your LeanIX instance — buttons appear automatically
 
-> **Firefox users:** Run `npm run build` and load `dist/leanix-extension-firefox.zip` via `about:debugging`.
+<!-- > **Firefox users:** Run `npm run build` and load `dist/leanix-extension-firefox.zip` via `about:debugging`. -->
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
@@ -133,9 +133,9 @@ Then:
 |---|---|---|
 | Google Chrome | 88+ | [Chrome Web Store](https://chromewebstore.google.com) *(coming soon)* |
 | Microsoft Edge | 88+ | [Edge Add-ons](https://microsoftedge.microsoft.com/addons) *(coming soon)* |
-| Mozilla Firefox | 128+ | [Firefox Add-ons](https://addons.mozilla.org) *(coming soon)* |
+<!-- | Mozilla Firefox | 128+ | [Firefox Add-ons](https://addons.mozilla.org) *(coming soon)* | -->
 
-All browsers require Manifest V3 support. The extension is tested and built for all three platforms via `npm run build`.
+All browsers require Manifest V3 support. The extension is tested and built for <!-- all three --> platforms via `npm run build`.
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
@@ -147,7 +147,7 @@ All browsers require Manifest V3 support. The extension is tested and built for 
 |---|---|
 | `npm run lint` | Run ESLint across `src/` |
 | `npm run lint:fix` | Auto-fix lint issues |
-| `npm run build` | Create `.zip` files for Chrome, Edge & Firefox stores |
+| `npm run build` | Create `.zip` files for <!-- Chrome, Edge & Firefox --> stores |
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
 
