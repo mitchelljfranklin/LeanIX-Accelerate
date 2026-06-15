@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Security Vulnerability"
+    url: https://github.com/mitchelljfranklin/LeanIX-Accelerate/security/policy
+    about: "Please do not open a public issue for security vulnerabilities. See SECURITY.md for responsible disclosure."
+  - name: "Question or Discussion"
+    url: https://github.com/mitchelljfranklin/LeanIX-Accelerate/discussions/new
+    about: "Ask a question or start a discussion in GitHub Discussions."

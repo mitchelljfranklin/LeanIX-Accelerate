@@ -1,0 +1,88 @@
+name: Bug Report
+description: Something isn't working as expected
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the form below so we can reproduce and fix it quickly.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear, concise description of the bug.
+      placeholder: "e.g. The export button doesn't appear on the Inventory page after navigating from a Factsheet."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps to trigger the bug.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      description: What should have happened instead?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Which feature is affected?
+      options:
+        - Data Export (Factsheet / Inventory tables)
+        - Print Export (Document detail pages)
+        - Documents Export (Doc list / Architecture Decisions)
+        - Popup / Settings
+        - General / Other
+    validations:
+      required: true
+
+  - type: input
+    id: page_url
+    attributes:
+      label: LeanIX page URL path
+      description: The URL path (not full domain) where the bug occurs.
+      placeholder: "/factsheet/... or /inventory/... or /documents/..."
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & version
+      description: Which browser and version are you using?
+      placeholder: "Chrome 125, Edge 125, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: extension_version
+    attributes:
+      label: Extension version
+      description: Which version of LeanIX Accelerate are you using?
+      placeholder: "v1.0.0"
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console logs (optional)
+      description: "If relevant, paste any errors from the browser DevTools console (`F12` → Console)."
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Anything else?
+      description: Screenshots, screen recordings, or additional context.
