@@ -10,14 +10,20 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       try {
         var currentVersion = chrome.runtime.getManifest().version;
 
-        chrome.storage.sync.get(STORAGE_KEY, function (result) {
-          var lastSeen = result[STORAGE_KEY] || "";
+        DOM.waitForElement("lx-app-main-menu-dropdown", 30000)
+          .then(function () {
+            chrome.storage.sync.get(STORAGE_KEY, function (result) {
+              var lastSeen = result[STORAGE_KEY] || "";
 
-          if (lastSeen === currentVersion) return;
+              if (lastSeen === currentVersion) return;
 
-          showChangelog(currentVersion);
-          chrome.storage.sync.set({ [STORAGE_KEY]: currentVersion });
-        });
+              showChangelog(currentVersion);
+              chrome.storage.sync.set({ [STORAGE_KEY]: currentVersion });
+            });
+          })
+          .catch(function () {
+            // Timed out — user likely on login/auth page, skip notification
+          });
       } catch (e) {
         // Ignore — modal.js may not be loaded or getManifest unavailable
       }
@@ -45,6 +51,15 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
     });
     contentHtml += "</ul>";
 
+    if (entry.linkText && entry.linkUrl) {
+      contentHtml +=
+        '<p style="margin-top:12px;"><a href="' +
+        entry.linkUrl +
+        '" target="_blank" rel="noopener">' +
+        entry.linkText +
+        "</a></p>";
+    }
+
     ModalUtils.show({
       title: "What\u2019s New",
       content: contentHtml,
@@ -66,14 +81,16 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       ],
     },
     "1.0.5": {
-      title: "v1.0.5 brings new utilities and polish:",
+      title: "Welcome to LeanIX Accelerate! Here\u2019s what\u2019s included:",
       changes: [
-        "ModalUtils — uniform modal dialog system for notifications and confirmations",
-        "Update Notification feature — see what\u2019s new after each update",
-        "Disclaimer on options page now matches README",
-        "Bug fix: Export button no longer appears on Surveys pages",
-        "All modal elements use inline styles to prevent platform CSS conflicts",
+        "Floating Data Export button on Factsheet and Inventory pages \u2014 export as JSON or Excel in one click",
+        "Document Print Export \u2014 print formatted documents to PDF from any document detail page",
+        "Documents List Export \u2014 download Architecture Decision lists as Excel spreadsheets",
+        "Extension popup with one-click feature toggles",
+        "Full settings page with reset-to-defaults",
       ],
+      linkText: "View all features on GitHub \u2192",
+      linkUrl: "https://github.com/mitchelljfranklin/LeanIX-Accelerate#-features",
     },
   };
 })();
