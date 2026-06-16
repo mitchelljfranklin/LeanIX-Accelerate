@@ -3,6 +3,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
 (function () {
   window.__leanixFeatures__.documentsExport = {
     init: function (DOM, settings) {
+      if (!/\/documents\//.test(window.location.pathname)) return;
       let intersectionObserver = null;
 
       const observeTable = function (tableEl) {
