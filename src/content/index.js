@@ -11,6 +11,7 @@
     "dataExport",
     "printExport",
     "documentsExport",
+    "updateNotification",
   ];
 
   for (const key of featureOrder) {

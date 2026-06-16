@@ -2,6 +2,7 @@ const FEATURE_LIST = [
   { key: "dataExport", label: "Data Export", desc: "Export table data as JSON and Excel" },
   { key: "printExport", label: "Print Export", desc: "Export documents via browser print dialog" },
   { key: "documentsExport", label: "Documents Export", desc: "Export document lists (Architecture Decisions) to Excel" },
+  { key: "updateNotification", label: "Update Notification", desc: "Show changelog when the extension is updated" },
 ];
 
 async function renderFeatureList() {

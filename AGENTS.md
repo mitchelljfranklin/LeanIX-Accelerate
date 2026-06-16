@@ -12,6 +12,7 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 |---|---|
 | `README.md` | Public-facing project documentation |
 | `docs/USERGUIDE.md` | End-user guide for extension features |
+| `docs/MODAL.md` | ModalUtils API reference and sample HTML output |
 | `AGENTS.md` | This file — AI agent context and rules |
 | `SECURITY.md` | Vulnerability reporting process |
 | `LICENSE` | GPL v3.0 |
@@ -35,6 +36,7 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 | Data Export | `dataExport` | `src/content/features/data-export.js` | Factsheet & Inventory |
 | Print Export | `printExport` | `src/content/features/print-export.js` | Document detail |
 | Documents Export | `documentsExport` | `src/content/features/documents-export.js` | Doc list / Architecture Decisions |
+| Update Notification | `updateNotification` | `src/content/features/update-notification.js` | All — shows changelog on version update |
 
 ## How the Extension Works
 
@@ -42,10 +44,12 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 Page load → content scripts injected (in manifest order)
   → storage.js loads first (defines SettingsStore)
   → dom-utils.js loads second (defines DOMUtils)
-  → xlsx.full.min.js loads third (defines window.XLSX)
+  → modal.js loads third (defines ModalUtils)
+  → xlsx.full.min.js loads fourth (defines window.XLSX)
   → data-export.js (registers on window.__leanixFeatures__)
   → print-export.js (registers on window.__leanixFeatures__)
   → documents-export.js (registers on window.__leanixFeatures__)
+  → update-notification.js (registers on window.__leanixFeatures__)
   → index.js runs last:
       1. Checks isLeanIXPage()
       2. Reads SettingsStore.getAll()
@@ -188,6 +192,85 @@ Shows a brief toast notification at the bottom-center of the viewport. Call this
 DOMUtils.showToast("Preparing download…");      // 3s default
 DOMUtils.showToast("Opening print…", 2000);      // custom 2s duration
 ```
+
+## Modal Utilities API
+
+### `ModalUtils.show(options)`
+Creates and displays a modal. Returns the instance.
+
+### `ModalUtils.create(options)`
+Creates a modal without showing it.
+
+```js
+// Notification with single OK button
+var modal = ModalUtils.show({
+  title: "Export Complete",
+  content: "Your file has been downloaded.",
+  footer: {
+    confirmText: "OK",
+    onConfirm: function () { /* acknowledged */ }
+  }
+});
+
+// Confirmation dialog
+var modal = ModalUtils.show({
+  title: "Confirm Delete",
+  content: "This cannot be undone.",
+  footer: {
+    cancelText: "Cancel",
+    confirmText: "Delete",
+    confirmClass: "lx-ext-btn-danger",
+    onCancel: function () { /* cleanup */ },
+    onConfirm: function () {
+      // return false to prevent auto-hide
+    }
+  }
+});
+
+// No footer (content only)
+ModalUtils.show({
+  title: "About",
+  content: "Some informational text.",
+  footer: false
+});
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `title` | string | `""` | Header title |
+| `content` | string \| Element | — | Body content |
+| `width` | string | `"600px"` | min-width and max-width |
+| `closable` | bool | `true` | Show close (×) button |
+| `footer` | bool \| object | `true` | `false` hides all buttons, object for custom config |
+| `onClose` | function | — | Called on close button click |
+
+### Footer object (`footer: { ... }`)
+
+| Key | Type | Default | Description |
+|---|---|---|---|
+| `cancelText` | string | `"Cancel"` | Cancel button label |
+| `confirmText` | string | `"OK"` | Confirm button label |
+| `confirmClass` | string | — | Extra class on confirm button |
+| `onCancel` | function | — | Cancel callback (always hides modal) |
+| `onConfirm` | function | — | Confirm callback (hides unless returns `false`) |
+
+### Instance methods
+
+| Method | Description |
+|---|---|
+| `.show()` | Display modal |
+| `.hide()` | Hide modal |
+| `.destroy()` | Hide and remove from DOM |
+| `.setTitle(text)` | Update header title |
+| `.setContent(htmlOrElement)` | Replace body content |
+| `.setConfirmText(text)` | Update confirm button label |
+| `.setCancelText(text)` | Update cancel button label |
+| `.setConfirmEnabled(bool)` | Enable/disable confirm button |
+| `.getElement()` | Returns the modal `<div>` |
+
+Full reference at `docs/MODAL.md`.
 
 ## Settings API
 
