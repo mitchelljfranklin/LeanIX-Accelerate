@@ -297,6 +297,15 @@ SettingsStore.onChange(callback)     // listens for storage changes
 | `.lx-ext-menu-down` | print-export, documents-export | Menu opens downward (button in header) |
 | `.lx-ext-menu-item` | all three | Clickable menu option with hover highlight |
 | `.lx-ext-toast` | all three | Download notification toast (slide-up, auto-dismiss) |
+| `.lx-ext-modal-overlay` | modal.js, update-notification | Full-screen backdrop (fixed, flex, centered) |
+| `.lx-ext-modal` | modal.js, update-notification | White dialog container with shadow |
+| `.lx-ext-modal-close` | modal.js | Close (×) button, absolute top-right |
+| `.lx-ext-modal-header` | modal.js | Header row with bottom border |
+| `.lx-ext-modal-title` | modal.js | Title heading (18px, weight 600) |
+| `.lx-ext-modal-content` | modal.js | Scrollable body area (max-height 60vh) |
+| `.lx-ext-modal-footer` | modal.js | Right-aligned button group with top border |
+| `.lx-ext-btn-cancel` | modal.js | Light/outline cancel footer button |
+| `.lx-ext-btn-confirm` | modal.js | Primary confirm footer button (#5c6ac4) |
 
 ## Critical Rules
 
@@ -330,6 +339,8 @@ if (document.getElementById("lx-ext-my-btn")) return;
 
 ### No inline styles
 All visual styling goes in `leanix.css`. Use `className` not `style`/`style.cssText`.
+
+**Exception:** Modal elements (`ModalUtils`) set critical layout properties (position, display, z-index, background, border, box-shadow) as inline styles via JS to prevent LeanIX platform CSS from overriding them. Hover states and transitions remain in `leanix.css`. If adding a new modal UI element, follow the same pattern — set structural position/appearance via inline styles, keep hover/transition/animation in the CSS file.
 
 ### The `matches` guard
 When checking `MutationObserver` added nodes, guard `node.matches`:

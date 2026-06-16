@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-v1.0.0-blue" />
+  <img src="https://img.shields.io/badge/version-v1.0.5-blue" />
   <img src="https://img.shields.io/badge/manifest-V3-4c1" />
   <img src="https://img.shields.io/badge/license-GPL%203.0-brightgreen" />
   <img src="https://img.shields.io/badge/Chrome-supported-4285F4?logo=googlechrome&logoColor=white" />
@@ -86,6 +86,18 @@ LeanIX is powerful, but everyday workflows involve repetitive clicks — exporti
       <h3>⚙️ Smart Controls</h3>
       <p><strong>Popup & full settings page</strong></p>
       <p>Toggle any feature on/off from the extension popup. Full settings panel with reset-to-defaults. Buttons survive page navigation — no reloads needed.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>🔔 Update Notification</h3>
+      <p><strong>All pages</strong></p>
+      <p>See what's new after each update. A changelog modal appears automatically when the extension is updated, showing the latest features and fixes. Only shown once per version.</p>
+    </td>
+    <td width="50%">
+      <h3>💬 Modal Dialogs</h3>
+      <p><strong>Notifications & confirmations</strong></p>
+      <p>Clean, platform-matching modal dialogs for notifications, confirmations, and guided actions — with a dark backdrop, close button, and configurable footer buttons.</p>
     </td>
   </tr>
 </table>
@@ -264,22 +276,24 @@ LeanIX-Accelerate/
 │   ├── shared/
 │   │   ├── storage.js         ← SettingsStore class — get/set feature toggles
 │   │   ├── dom-utils.js       ← DOMUtils — createElement, waitForElement, etc.
+│   │   ├── modal.js           ← ModalUtils — configurable modal dialogs
 │   │   └── xlsx.full.min.js   ← SheetJS for .xlsx file generation
 │   │
 │   ├── content/
 │   │   ├── index.js           ← Entry point — loads features in order
 │   │   ├── leanix.css         ← ALL extension UI styles (lx-ext- prefix)
 │   │   └── features/
-│   │       ├── data-export.js      ← Facts table → JSON / native Excel
-│   │       ├── print-export.js     ← Document → Print / Excel workbook
-│   │       └── documents-export.js ← Doc list → Excel spreadsheet
+│   │       ├── data-export.js            ← Facts table → JSON / native Excel
+│   │       ├── print-export.js           ← Document → Print / Excel workbook
+│   │       ├── documents-export.js       ← Doc list → Excel spreadsheet
+│   │       └── update-notification.js    ← Changelog modal on version update
 │   │
 │   ├── popup/                 ← Extension icon click → toggle features
 │   └── options/               ← Full settings page → toggle + reset
 │
 ├── icons/                     ← 16/48/128px extension icons
 ├── scripts/build.js           ← npm run build → dist/*.zip for stores
-└── docs/                      ← Screenshots, logo, store listing assets
+└── docs/                      ← Screenshots, logo, MODAL.md, store listing assets
 ```
 
 ### Before you PR
@@ -287,7 +301,7 @@ LeanIX-Accelerate/
 - [ ] Feature survives SPA navigation (navigate away and back — button reappears)
 - [ ] Button has unique `id`, guarded with `document.getElementById`
 - [ ] No inline styles — everything in `leanix.css`
-- [ ] Registered in all 6 registration files
+- [ ] Registered in all 7 registration files
 - [ ] Tested on Chrome and Edge
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
@@ -318,6 +332,12 @@ No. The extension uses lightweight DOM observers that only activate when the tar
 <summary><strong>How do I update the extension?</strong></summary>
 
 If installed from a store, updates happen automatically. If loaded unpacked, pull the latest changes and click the reload icon on the extension card in `chrome://extensions`.
+</details>
+
+<details>
+<summary><strong>What is the changelog popup that appeared after updating?</strong></summary>
+
+That's the Update Notification feature. It shows a one-time modal with a list of what's new after each version update. Once you dismiss it, it won't appear again until the next update. You can disable this feature in the popup or settings page.
 </details>
 
 <details>
