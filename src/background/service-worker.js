@@ -6,6 +6,7 @@ chrome.runtime.onInstalled.addListener((details) => {
           dataExport: true,
           printExport: true,
           documentsExport: true,
+          updateNotification: true,
         },
         theme: "default",
       },

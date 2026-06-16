@@ -2,6 +2,7 @@ const FEATURE_DEFAULTS = {
   dataExport: true,
   printExport: true,
   documentsExport: true,
+  updateNotification: true,
 };
 
 const DEFAULT_SETTINGS = {

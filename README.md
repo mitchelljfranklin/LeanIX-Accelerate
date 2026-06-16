@@ -18,9 +18,15 @@
 </p>
 
 <p align="center">
-  <a href="https://chromewebstore.google.com"><img src="https://img.shields.io/badge/Chrome-coming%20soon-4285F4?logo=googlechrome&logoColor=white" /></a>
-  <a href="https://microsoftedge.microsoft.com/addons"><img src="https://img.shields.io/badge/Edge-coming%20soon-0078D7?logo=microsoftedge&logoColor=white" /></a>
+  <a href="https://chromewebstore.google.com/detail/leanix-accelerate/pmhnpiejimiakkgoblfebilojahemgmh"><img src="https://img.shields.io/badge/Chrome-Install-4285F4?logo=googlechrome&logoColor=white" /></a>
+  <a href="https://chromewebstore.google.com/detail/leanix-accelerate/pmhnpiejimiakkgoblfebilojahemgmh"><img src="https://img.shields.io/badge/Edge-Install-0078D7?logo=microsoftedge&logoColor=white" /></a>
   <!-- <a href="https://addons.mozilla.org"><img src="https://img.shields.io/badge/Firefox-coming%20soon-FF7139?logo=firefox&logoColor=white" /></a> -->
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/chrome-web-store/users/pmhnpiejimiakkgoblfebilojahemgmh?color=4285F4&logo=googlechrome&logoColor=white" />
+  <img src="https://img.shields.io/chrome-web-store/rating/pmhnpiejimiakkgoblfebilojahemgmh?color=4285F4&logo=googlechrome&logoColor=white" />
+  <img src="https://img.shields.io/chrome-web-store/v/pmhnpiejimiakkgoblfebilojahemgmh?color=4285F4&logo=googlechrome&logoColor=white" />
 </p>
 
 <p align="center">
@@ -143,8 +149,8 @@ Then:
 
 | Browser | Minimum Version | Store |
 |---|---|---|
-| Google Chrome | 88+ | [Chrome Web Store](https://chromewebstore.google.com) *(coming soon)* |
-| Microsoft Edge | 88+ | [Edge Add-ons](https://microsoftedge.microsoft.com/addons) *(coming soon)* |
+| Google Chrome | 88+ | [Chrome Web Store](https://chromewebstore.google.com/detail/leanix-accelerate/pmhnpiejimiakkgoblfebilojahemgmh) |
+| Microsoft Edge | 88+ | [Chrome Web Store](https://chromewebstore.google.com/detail/leanix-accelerate/pmhnpiejimiakkgoblfebilojahemgmh) |
 <!-- | Mozilla Firefox | 128+ | [Firefox Add-ons](https://addons.mozilla.org) *(coming soon)* | -->
 
 All browsers require Manifest V3 support. The extension is tested and built for <!-- all three --> platforms via `npm run build`.

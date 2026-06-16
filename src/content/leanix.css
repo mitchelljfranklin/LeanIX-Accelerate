@@ -8,6 +8,8 @@
  *   2. Export Buttons    - Main trigger buttons
  *   3. Dropdown Menus    - Export option dropdowns
  *   4. Menu Items        - Individual options within dropdowns
+ *   5. Toast Notification - Download notification popup
+ *   6. Modal Dialog      - Configurable modal dialogs for notifications and confirmations
  */
 
 
@@ -193,4 +195,173 @@
 .lx-ext-toast-show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+
+/* ==========================================================================
+ * 6. Modal Dialog
+ * ========================================================================== */
+
+/*
+ * Full-screen overlay backdrop
+ * Dark semi-transparent layer that covers the entire viewport behind the
+ * modal dialog. Hidden by default, shown when the modal is visible.
+ */
+.lx-ext-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999998;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 8vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.lx-ext-modal-overlay.lx-ext-modal-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/*
+ * Modal dialog box
+ * White rounded container with shadow, positioned by the overlay flex
+ * layout. Matches the LeanIX platform modal appearance.
+ */
+.lx-ext-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/*
+ * Close button
+ * Absolutely positioned in the top-right corner of the modal. Displays a
+ * multiplication sign (×) styled as a subtle icon button.
+ */
+.lx-ext-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #888;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+  z-index: 1;
+}
+
+.lx-ext-modal-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/*
+ * Modal header
+ * Contains the title text with a bottom border separator.
+ */
+.lx-ext-modal-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+/*
+ * Modal title
+ * Large heading styled to match the LeanIX lx-heading-2 pattern.
+ */
+.lx-ext-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+/*
+ * Modal content area
+ * Scrollable region for the body content of the modal. Fills remaining
+ * vertical space between the header and footer.
+ */
+.lx-ext-modal-content {
+  padding: 20px 24px;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+/*
+ * Modal footer
+ * Right-aligned button group with a top border separator.
+ */
+.lx-ext-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 24px;
+  border-top: 1px solid #e8e8e8;
+}
+
+/*
+ * Footer cancel button
+ * Light/outline-style button, matches the platform Cancel button style.
+ */
+.lx-ext-btn-cancel {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #f5f6fa;
+  color: #555;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.lx-ext-btn-cancel:hover {
+  background: #e8e9ef;
+  border-color: #ccc;
+}
+
+/*
+ * Footer confirm button
+ * Primary action button using the brand color, matching the platform
+ * primary button (lx-button color="primary").
+ */
+.lx-ext-btn-confirm {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #5c6ac4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lx-ext-btn-confirm:hover {
+  background: #4a57b3;
+}
+
+.lx-ext-btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
