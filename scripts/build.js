@@ -50,7 +50,7 @@ function copyTree(zipDir, sourceDir) {
 
     if (entry.isDirectory()) {
       fs.mkdirSync(destPath, { recursive: true });
-      copyTree(destPath, srcPath);
+      copyTree(zipDir, srcPath);
     } else {
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
       fs.writeFileSync(destPath, fs.readFileSync(srcPath));
@@ -86,7 +86,7 @@ function createZip(stageDir, zipName) {
   const stageName = path.basename(stageDir);
 
   try {
-    execSync(`cd "${DIST}" && zip -r "${zipPath}" "${stageName}" -x "*.DS_Store"`, {
+    execSync(`cd "${stageDir}" && zip -r "${zipPath}" . -x "*.DS_Store"`, {
       stdio: "pipe",
     });
     const sizeKB = (fs.statSync(zipPath).size / 1024).toFixed(0);
