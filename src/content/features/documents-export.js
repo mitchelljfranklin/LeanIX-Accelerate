@@ -3,10 +3,10 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
 (function () {
   window.__leanixFeatures__.documentsExport = {
     init: function (DOM, settings) {
-      if (!/\/documents\//.test(window.location.pathname)) return;
       let intersectionObserver = null;
 
-      const observeTable = function (tableEl) {
+      const observeHeader = function (headerEl) {
+        if (!/\/documents\//.test(window.location.pathname)) return;
         if (intersectionObserver) intersectionObserver.disconnect();
         intersectionObserver = new IntersectionObserver(function (entries) {
           for (const entry of entries) {
@@ -15,23 +15,23 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
             }
           }
         });
-        intersectionObserver.observe(tableEl);
+        intersectionObserver.observe(headerEl);
       };
 
-      const existing = document.querySelector("table.table-hover");
-      if (existing) observeTable(existing);
+      const existing = document.querySelector("[data-testid='header-title']");
+      if (existing) observeHeader(existing);
 
       const mutObserver = new MutationObserver(function (mutations) {
         for (const mutation of mutations) {
           for (const node of mutation.addedNodes) {
             if (node.nodeType !== Node.ELEMENT_NODE) continue;
-            if (node.matches && node.matches("table.table-hover")) {
-              observeTable(node);
+            if (node.matches && node.matches("[data-testid='header-title']")) {
+              observeHeader(node);
               return;
             }
             if (node.querySelectorAll) {
-              const table = node.querySelector("table.table-hover");
-              if (table) { observeTable(table); return; }
+              const headerTitle = node.querySelector("[data-testid='header-title']");
+              if (headerTitle) { observeHeader(headerTitle); return; }
             }
           }
         }
