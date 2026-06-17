@@ -4,3 +4,4 @@ dist/
 *.zip
 *.crx
 *.pem
+src/content/content-bundle.js

@@ -5,6 +5,8 @@ const FEATURE_LIST = [
   { key: "updateNotification", label: "Update Notification", desc: "Show changelog when the extension is updated" },
 ];
 
+document.querySelector(".version").textContent = "v" + chrome.runtime.getManifest().version;
+
 async function renderFeatureList() {
   const list = document.getElementById("featureList");
   list.innerHTML = "";

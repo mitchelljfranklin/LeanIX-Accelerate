@@ -16,18 +16,21 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 | `AGENTS.md` | This file — AI agent context and rules |
 | `SECURITY.md` | Vulnerability reporting process |
 | `LICENSE` | GPL v3.0 |
-| `manifest.json` | Chrome extension manifest (MV3) |
+| `manifest.json` | Chrome extension manifest (MV3) — loads library + bundle |
 | `package.json` | npm metadata, version, dev scripts |
-| `.gitignore` | Excludes `node_modules/`, `dist/`, `.DS_Store`, `*.zip`, `*.crx`, `*.pem` |
+| `.eslintrc.json` | ESLint configuration (browser + webextensions env, ES2022) |
+| `.eslintignore` | Excludes `src/library/`, `dist/`, `node_modules/` from linting |
+| `.gitignore` | Excludes `node_modules/`, `dist/`, `.DS_Store`, `*.zip`, `*.crx`, `*.pem`, `src/content/content-bundle.js` |
 
 ## Tech Stack
 
-- **Runtime:** Browser extension, no bundler — raw JS files loaded in manifest order
-- **JS Style:** ES5-compatible `function` declarations inside IIFEs, `const`/`let` for variables, no arrow functions in object methods
+- **Runtime:** Chrome Manifest V3 browser extension
+- **Bundler:** esbuild — content scripts bundled into a single IIFE via `npm run build`
+- **JS Style:** ES5-compatible `function` declarations inside IIFEs, `const`/`let` for local variables, `var` for declarations shared across files in the bundle, no arrow functions in object methods
 - **CSS:** Single file `src/content/leanix.css`, all classes prefixed `lx-ext-`, no inline styles
 - **Lint:** ESLint + Prettier (`npm run lint`)
 - **Node:** >= 18 (dev tooling only, not needed at runtime)
-- **Vendor:** SheetJS 0.20.3 at `src/shared/xlsx.full.min.js` (registers `window.XLSX`)
+- **Vendor:** SheetJS 0.20.3 at `src/library/xlsx.full.min.js` (registers `window.XLSX`, loaded before the bundle)
 
 ## Active Features
 
@@ -41,22 +44,72 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 ## How the Extension Works
 
 ```
+npm run build
+  → esbuild concatenates content scripts in CONTENT_ORDER into src/content/content-bundle.js
+  → Wraps in IIFE: (() => { ... })()
+  → src/content/content-bundle.js is gitignored (build artifact)
+
 Page load → content scripts injected (in manifest order)
-  → storage.js loads first (defines SettingsStore)
-  → dom-utils.js loads second (defines DOMUtils)
-  → modal.js loads third (defines ModalUtils)
-  → xlsx.full.min.js loads fourth (defines window.XLSX)
-  → data-export.js (registers on window.__leanixFeatures__)
-  → print-export.js (registers on window.__leanixFeatures__)
-  → documents-export.js (registers on window.__leanixFeatures__)
-  → update-notification.js (registers on window.__leanixFeatures__)
-  → index.js runs last:
-      1. Checks isLeanIXPage()
-      2. Reads SettingsStore.getAll()
-      3. Iterates featureOrder, calls init() on each enabled feature
+  → xlsx.full.min.js loads first (defines window.XLSX)
+  → content-bundle.js loads second:
+      1. FEATURE_DEFAULTS / DEFAULT_SETTINGS / SettingsStore defined (var)
+      2. DOMUtils defined (var)
+      3. ModalUtils defined (var)
+      4. data-export.js (registers on window.__leanixFeatures__)
+      5. print-export.js (registers on window.__leanixFeatures__)
+      6. documents-export.js (registers on window.__leanixFeatures__)
+      7. update-notification.js (registers on window.__leanixFeatures__)
+      8. index.js runs:
+          a. Checks isLeanIXPage()
+          b. Reads SettingsStore.getAll()
+          c. Iterates featureOrder, calls init() on each enabled feature
 ```
 
 Each feature sets up `MutationObserver` + `IntersectionObserver` to inject buttons that survive SPA navigation.
+
+## Popup
+
+Clicking the extension toolbar icon opens `src/popup/popup.html` with quick-access toggle switches for each feature. Changes save immediately to `chrome.storage.sync` via the service worker.
+
+- **Toggle list** — rendered by `popup.js` from `FEATURE_LIST` (key, label, desc). Each toggle sends a `chrome.runtime.sendMessage({ type: "updateFeature", ... })` to the service worker.
+- **Configure button** — calls `chrome.runtime.openOptionsPage()` to open the full settings page.
+- **Reload Page button** — calls `chrome.tabs.reload()` on the active tab so settings take effect.
+
+When adding a new feature toggle, add its `{ key, label, desc }` to `FEATURE_LIST` in `popup.js`.
+
+## Options page
+
+The full settings page at `src/options/options.html` renders feature toggles from the same `FEATURE_LIST` contract and provides a reset-to-defaults button.
+
+- **Toggle rows** — rendered by `options.js` from `FEATURE_LIST`. Each toggle sends `updateFeature` messages to the service worker.
+- **Reset button** — sends `resetSettings` message, which calls `chrome.storage.sync.clear()`, then reloads the options page after a 1-second delay.
+- **Disclaimer** — the same disclaimer text from `README.md` is shown at the bottom.
+
+The options page loads its own CSS (`options.css`), not `leanix.css`.
+
+## Configuration flow
+
+```
+popup/options → chrome.runtime.sendMessage({ type: "updateFeature" })
+    ↓
+service-worker.js → chrome.storage.sync.set({ leanix_extension_settings })
+    ↓
+content/index.js → SettingsStore.getAll() → iterates features → calls init()
+    ↓
+content/features/*.js → reads settings passed to init(DOM, settings)
+```
+
+When settings change at runtime, `SettingsStore.onChange()` fires and logs a message prompting the user to reload the page. Settings do not take effect until the page is reloaded.
+
+## Storage
+
+A single key in `chrome.storage.sync`:
+
+- **`leanix_extension_settings`** — user preferences object `{ features: {...}, theme: "default" }`. Read by `SettingsStore` in the bundle, written by the service worker in response to popup/options messages.
+
+Default feature values are defined in two places (must stay in sync):
+- `src/shared/storage.js` → `FEATURE_DEFAULTS`
+- `src/background/service-worker.js` → `onInstalled` handler
 
 ## Adding a Feature — Full Checklist
 
@@ -67,7 +120,7 @@ When adding, changing, or removing a feature, you MUST update ALL of the followi
 | # | File | Action |
 |---|---|---|
 | 1 | `src/content/features/<name>.js` | Create/delete the feature file |
-| 2 | `manifest.json` | Add/remove script from `content_scripts[0].js` array (before `index.js`) |
+| 2 | `scripts/build.js` | Add/remove from `CONTENT_ORDER` array (before `index.js`) |
 | 3 | `src/content/index.js` | Add/remove key from `featureOrder` array |
 | 4 | `src/background/service-worker.js` | Add/remove `featureName: true` from default `features` object |
 | 5 | `src/shared/storage.js` | Add/remove `featureName: true` from `FEATURE_DEFAULTS` object |
@@ -159,6 +212,76 @@ init: function (DOM, settings) {
   mutObserver.observe(document.body, { childList: true, subtree: true });
 }
 ```
+
+## Refactoring rules — preserve existing logic
+
+When splitting, renaming, or moving code between files:
+- **Copy-paste verbatim** — never rewrite or simplify complex logic during a refactor. Even if the code looks verbose or outdated, its behavior depends on subtle details (DOM event timing, CSS class interactions, MutationObserver callbacks, etc.) that are easy to break.
+- **Verify before committing** — after any file split or rename, test the affected features on a LeanIX page to confirm they still work.
+- **When in doubt, don't refactor** — a slightly messy but working file is better than a clean but broken one.
+
+## Documentation — keep it in sync
+
+When adding, removing, or renaming a script file:
+- Update the **CONTENT_ORDER** in `scripts/build.js`
+- Update the **Script responsibilities** references in this file
+- Run `npm run build` to verify nothing is broken
+
+When adding or removing a feature (even without script changes):
+- Update the **README.md** Features section and table of contents
+- Update the **docs/USERGUIDE.md** with a description of what the feature does and how users interact with it
+- If the feature has a toggle, add it to `FEATURE_LIST` in `src/popup/popup.js` and `src/options/options.js`
+
+When adding or removing a third-party library:
+- Place it in `src/library/` (never bundle vendor code — only bundle code we create)
+- Update the **manifest.json** content_scripts js array to include the library (before the bundle)
+- Update the **Tech Stack** section (this file)
+- Update the **README.md** if the library enables new capabilities
+
+When documentation sections are added or removed:
+- Update the **README.md** table of contents
+- If the new section replaces or overlaps with existing content, remove the stale content to avoid duplication
+
+When browser support changes:
+- Update the **README.md** Supported Browsers table
+- Update the **docs/USERGUIDE.md** Installation section if store links change
+
+After every change:
+- Re-read the files you edited and look for any stale or contradictory information they may now contain — fix it proactively
+- If an old library, tool, or approach is no longer in use, remove all references to it from all `.md` files
+
+When modifying the build script (`scripts/build.js`):
+- If you change `CONTENT_ORDER`, verify that `var`-declared dependencies appear before the files that reference them
+- If you change manifest structure (add/remove keys), update all three browser generators (Chrome, Edge, Firefox) in `scripts/build.js` to handle the new keys correctly
+
+## Code style — human-readable formatting
+
+All code must be written in a human-readable format — this applies equally to hand-written and AI-generated code. Avoid minified, obfuscated, or machine-optimized code in any source files.
+
+The **only** minification or transformation happens in the build step (`npm run build`). All `.js`, `.css`, and `.html` files in `src/` must remain unminified and readable.
+
+### Variable declarations within the bundle
+
+The esbuild IIFE concatenates all content scripts into a single function scope. Top-level declarations that are referenced by OTHER files in the bundle **must** use `var`. This is the contract that makes cross-file references work inside the IIFE. Examples: `var SettingsStore`, `var DOMUtils`, `var ModalUtils`, `var FEATURE_DEFAULTS`, `var DEFAULT_SETTINGS`.
+
+Top-level declarations used only within their own file **should** use `const` or `let` for clarity, but `var` is acceptable if the file already uses it consistently.
+
+Never use implicit globals (assignment without `var`/`let`/`const`).
+
+### No arrow functions in object methods
+
+Use `function` declarations for object methods (consistent with ES5 compatibility target).
+
+### CSS convention — `leanix.css` is the single stylesheet
+
+All CSS rules for content scripts **must** be added to `src/content/leanix.css` using the `lx-ext-` prefix. Do **not**:
+- Set inline `style=""` attributes on elements in HTML
+- Set `element.style.*` or `element.style.cssText` in JavaScript (see exception below)
+- Add `<style>` blocks to any HTML file
+
+**Exception:** Modal elements (`ModalUtils`) set critical layout properties (position, display, z-index, background, border, box-shadow) as inline styles via JS to prevent LeanIX platform CSS from overriding them. Hover states and transitions remain in `leanix.css`.
+
+Popup and options pages load their own separate CSS files (`popup.css`, `options.css`).
 
 ## DOM Utilities API
 
@@ -363,7 +486,7 @@ This extension runs entirely in-browser. Never add analytics, telemetry, trackin
 
 ## SheetJS Usage
 
-Library is at `src/shared/xlsx.full.min.js`, registers as `window.XLSX`.
+Library is at `src/library/xlsx.full.min.js`, registers as `window.XLSX`. Loaded as a separate content script before the bundle.
 
 ```js
 var wb = XLSX.utils.book_new();
@@ -377,20 +500,54 @@ var blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocumen
 
 ## Build Script
 
-`scripts/build.js` creates three zip files in `dist/`:
-- `leanix-extension-chrome.zip` — standard MV3 manifest
-- `leanix-extension-edge.zip` — identical to Chrome
-- `leanix-extension-firefox.zip` — adds `browser_specific_settings.gecko` with `id: "leanix-extension@example.com"`
+`scripts/build.js` does everything:
 
-`dist/` is gitignored.
+1. Reads `package.json` for the version number
+2. Concatenates content scripts in `CONTENT_ORDER` and passes them through esbuild (`transformSync`, `format: "iife"`, `target: "es2015"`) to produce `src/content/content-bundle.js`
+3. Creates staging directories (in system temp) and copies `manifest.json`, `icons/`, `src/`, and `dist/` into each
+4. Generates browser-specific manifests from the base `manifest.json`:
+   - **Chrome** — copied as-is (MV3, includes `update_url`)
+   - **Edge** — identical to Chrome
+   - **Firefox** — adds `browser_specific_settings.gecko` with `id: "leanix-extension@example.com"` and `strict_min_version: "128.0"`
+5. Packages each into `dist/leanix-extension-{Browser}.zip`
+
+Output:
+- `src/content/content-bundle.js` — single IIFE bundle of all content scripts (~50 KB), gitignored
+- `dist/leanix-extension-chrome.zip`
+- `dist/leanix-extension-edge.zip`
+- `dist/leanix-extension-firefox.zip`
+
+`dist/` is gitignored. The version is read from `package.json` and injected into all manifests. To release:
+1. Bump `version` in `package.json` and `manifest.json`
+2. Run `npm run build`
+3. Upload the zips from `dist/` to the respective stores
 
 ## Commands
 
 ```bash
 npm run lint          # Run ESLint on src/
 npm run lint:fix      # Auto-fix lint issues
-npm run build         # Build store-ready zips for Chrome, Edge, Firefox
+npm run build         # Bundle content scripts + create store-ready zips
 ```
+
+## Testing
+
+There is no test suite. To test, load the extension unpacked in `chrome://extensions` (Developer Mode) pointing to the project root, then visit a LeanIX page.
+
+After code changes:
+1. Run `npm run build` (if you changed any file in `CONTENT_ORDER`)
+2. Reload the extension on the `chrome://extensions` card
+3. Refresh the LeanIX page
+
+To see content-script console output, inspect the LeanIX page — content scripts log to the main page console in Chrome. Bundle errors include source file comments from esbuild.
+
+## Rebuild scope
+
+- Changes to any file in `CONTENT_ORDER` (shared libs, feature files, `index.js`) → must run `npm run build`
+- Changes to `manifest.json` → must run `npm run build` (for store zips; for local dev, reload the extension)
+- Changes to `src/library/xlsx.full.min.js` → no rebuild needed (loaded directly by manifest)
+- Changes to popup (`src/popup/*`), options (`src/options/*`), or background (`src/background/*`) → no rebuild needed
+- Changes to `src/content/leanix.css` → no rebuild needed (loaded directly by manifest)
 
 ## LeanIX DOM Reference
 

@@ -1,16 +1,16 @@
-const FEATURE_DEFAULTS = {
+var FEATURE_DEFAULTS = {
   dataExport: true,
   printExport: true,
   documentsExport: true,
   updateNotification: true,
 };
 
-const DEFAULT_SETTINGS = {
+var DEFAULT_SETTINGS = {
   features: FEATURE_DEFAULTS,
   theme: "default",
 };
 
-class SettingsStore {
+var SettingsStore = class {
   static STORAGE_KEY = "leanix_extension_settings";
 
   static async getAll() {

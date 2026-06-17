@@ -1,0 +1,4 @@
+src/library/
+src/content/content-bundle.js
+dist/
+node_modules/

@@ -1,7 +1,9 @@
 /*
- * Build script — creates store-ready zip files for Chrome, Edge, and Firefox.
+ * Build script — bundles content scripts with esbuild, then creates
+ * store-ready zip files for Chrome, Edge, and Firefox.
  *
- * Output: dist/leanix-extension-chrome.zip
+ * Output: dist/content-bundle.js
+ *         dist/leanix-extension-chrome.zip
  *         dist/leanix-extension-edge.zip
  *         dist/leanix-extension-firefox.zip
  *
@@ -11,12 +13,27 @@
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
+const esbuild = require("esbuild");
 
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 
 const PACKAGE = require(path.join(ROOT, "package.json"));
 const VERSION = PACKAGE.version;
+
+/* Content scripts bundled in this order. */
+const CONTENT_ORDER = [
+  "src/shared/storage.js",
+  "src/shared/dom-utils.js",
+  "src/shared/modal.js",
+  "src/content/features/data-export.js",
+  "src/content/features/print-export.js",
+  "src/content/features/documents-export.js",
+  "src/content/features/update-notification.js",
+  "src/content/index.js",
+];
+
+var BUNDLED_FILES = new Set(CONTENT_ORDER);
 
 /* Directories and files to include in each extension zip. */
 const INCLUDE = [
@@ -25,13 +42,14 @@ const INCLUDE = [
   "src",
 ];
 
-/* System junk to exclude from zips. */
-const EXCLUDE = [".DS_Store", "Thumbs.db"];
+/* System junk and bundled source to exclude from zips. */
+const EXCLUDE = [".DS_Store", "Thumbs.db", ".zip"];
 
 /* ------------------------------------------------------------------ */
 
 function shouldInclude(filePath) {
   const rel = path.relative(ROOT, filePath);
+  if (BUNDLED_FILES.has(rel)) return false;
   for (const name of EXCLUDE) {
     if (rel.includes(name)) return false;
   }
@@ -59,7 +77,7 @@ function copyTree(zipDir, sourceDir) {
 }
 
 function prepareStaging(label) {
-  const stage = path.join(DIST, `leanix-extension-${label}`);
+  const stage = path.join(require("os").tmpdir(), `leanix-extension-${label}`);
   if (fs.existsSync(stage)) fs.rmSync(stage, { recursive: true });
   fs.mkdirSync(stage, { recursive: true });
 
@@ -80,7 +98,21 @@ function prepareStaging(label) {
   return stage;
 }
 
+function removeEmptyDirs(dir) {
+  var entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (var i = 0; i < entries.length; i++) {
+    if (entries[i].isDirectory()) {
+      var subdir = path.join(dir, entries[i].name);
+      removeEmptyDirs(subdir);
+      if (fs.readdirSync(subdir).length === 0) {
+        fs.rmdirSync(subdir);
+      }
+    }
+  }
+}
+
 function createZip(stageDir, zipName) {
+  removeEmptyDirs(stageDir);
   const zipPath = path.join(DIST, zipName);
   if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
   const stageName = path.basename(stageDir);
@@ -104,6 +136,29 @@ function createZip(stageDir, zipName) {
 console.log(`\nBuilding LeanIX Extension v${VERSION}\n`);
 
 if (!fs.existsSync(DIST)) fs.mkdirSync(DIST);
+
+/* ---- Bundle content scripts ------------------------------------- */
+
+console.log("Bundle:");
+const BUNDLE_PATH = path.join(ROOT, "src/content/content-bundle.js");
+
+var combined = CONTENT_ORDER.map(function (f) {
+  return fs.readFileSync(path.join(ROOT, f), "utf8");
+}).join("\n");
+
+try {
+  var result = esbuild.transformSync(combined, {
+    loader: "js",
+    format: "iife",
+    target: "es2015",
+  });
+  fs.writeFileSync(BUNDLE_PATH, result.code, "utf8");
+  const bundleKB = (fs.statSync(BUNDLE_PATH).size / 1024).toFixed(0);
+  console.log(`  src/content/content-bundle.js  (${bundleKB} KB)`);
+} catch (err) {
+  console.error("  Bundle failed:", err.message);
+  process.exit(1);
+}
 
 /* ---- Chrome ----------------------------------------------------- */
 
@@ -140,8 +195,10 @@ createZip(ffStage, "leanix-extension-firefox.zip");
 /* ---- Done ------------------------------------------------------- */
 
 console.log("\nBuild complete — dist/ contains:");
-const files = fs.readdirSync(DIST).filter((f) => f.endsWith(".zip"));
-for (const f of files) {
-  console.log(`  ${f}`);
+const files = fs.readdirSync(DIST).filter(function (f) {
+  return f.endsWith(".zip");
+});
+for (var i = 0; i < files.length; i++) {
+  console.log(`  ${files[i]}`);
 }
 console.log();

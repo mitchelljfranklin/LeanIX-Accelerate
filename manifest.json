@@ -26,15 +26,8 @@
         "https://*.leanix.com/*"
       ],
       "js": [
-        "src/shared/storage.js",
-        "src/shared/dom-utils.js",
-        "src/shared/modal.js",
-        "src/shared/xlsx.full.min.js",
-        "src/content/features/data-export.js",
-        "src/content/features/print-export.js",
-        "src/content/features/documents-export.js",
-        "src/content/features/update-notification.js",
-        "src/content/index.js"
+        "src/library/xlsx.full.min.js",
+        "src/content/content-bundle.js"
       ],
       "css": ["src/content/leanix.css"],
       "run_at": "document_idle"

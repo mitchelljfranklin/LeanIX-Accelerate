@@ -42,7 +42,13 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
 
   function showChangelog(version) {
     var entry = CHANGELOG[version];
-    if (!entry) return;
+
+    if (!entry) {
+      var keys = Object.keys(CHANGELOG).sort();
+      if (keys.length === 0) return;
+      var latestVersion = keys[keys.length - 1];
+      entry = CHANGELOG[latestVersion];
+    }
 
     var contentHtml = "<p>" + entry.title + "</p>";
     contentHtml += '<ul style="list-style-type:disc;padding-left:20px;">';
@@ -70,15 +76,16 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
   }
 
   var CHANGELOG = {
-    "1.0.0": {
-      title: "LeanIX Accelerate is here! Here\u2019s what\u2019s included in the initial release:",
+    "1.0.6": {
+      title: "Here\u2019s what\u2019s new in v1.0.6:",
       changes: [
-        "Floating Data Export button on Factsheet and Inventory pages — export as JSON or Excel in one click",
-        "Document Print Export — print formatted documents to PDF from any document detail page",
-        "Documents List Export — download Architecture Decision lists as Excel spreadsheets",
-        "Extension popup with one-click feature toggles",
-        "Full settings page with reset-to-defaults",
+        "Content scripts bundled into a single file for faster loading",
+        "Fixed documents export button not reappearing after SPA navigation",
+        "Popup now shows the current extension version from the manifest",
+        "Build improvements and reduced extension size",
       ],
+      linkText: "View all features on GitHub \u2192",
+      linkUrl: "https://github.com/mitchelljfranklin/LeanIX-Accelerate#-features",
     },
     "1.0.5": {
       title: "Welcome to LeanIX Accelerate! Here\u2019s what\u2019s included:",
@@ -91,6 +98,16 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
       ],
       linkText: "View all features on GitHub \u2192",
       linkUrl: "https://github.com/mitchelljfranklin/LeanIX-Accelerate#-features",
+    },
+    "1.0.0": {
+      title: "LeanIX Accelerate is here! Here\u2019s what\u2019s included in the initial release:",
+      changes: [
+        "Floating Data Export button on Factsheet and Inventory pages \u2014 export as JSON or Excel in one click",
+        "Document Print Export \u2014 print formatted documents to PDF from any document detail page",
+        "Documents List Export \u2014 download Architecture Decision lists as Excel spreadsheets",
+        "Extension popup with one-click feature toggles",
+        "Full settings page with reset-to-defaults",
+      ],
     },
   };
 })();

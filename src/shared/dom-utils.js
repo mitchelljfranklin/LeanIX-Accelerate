@@ -1,4 +1,4 @@
-const DOMUtils = {
+var DOMUtils = {
   waitForElement(selector, timeout = 10000) {
     return new Promise((resolve, reject) => {
       const existing = document.querySelector(selector);

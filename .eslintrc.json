@@ -1,0 +1,16 @@
+{
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "webextensions": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "rules": {
+    "no-unused-vars": ["warn", { "args": "none", "varsIgnorePattern": "^(DOMUtils|ModalUtils|SettingsStore|FEATURE_DEFAULTS|DEFAULT_SETTINGS)$" }],
+    "no-undef": "off",
+    "no-console": "off"
+  }
+}
