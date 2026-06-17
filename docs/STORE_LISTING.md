@@ -10,6 +10,8 @@ Unlock new levels of efficiency and productivity with one-click export buttons i
 
 📋 Document List Export — Architecture Decisions & list pages. Export button in the page header. Download the visible document list (ID, Title, Status, Creator, Last Updated) as a clean .xlsx spreadsheet.
 
+🗂️ Diagram Details — Diagram pages. A gear icon button next to the Edit button that opens the Diagram Details panel in one click — no need to open the More dropdown.
+
 ⚙️ Smart Controls — Popup & full settings page. Toggle any feature on/off from the extension popup. Full settings panel with reset-to-defaults. Buttons survive page navigation — no reloads needed.
 
 🔒 Privacy
