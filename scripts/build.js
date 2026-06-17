@@ -29,6 +29,7 @@ const CONTENT_ORDER = [
   "src/content/features/data-export.js",
   "src/content/features/print-export.js",
   "src/content/features/documents-export.js",
+  "src/content/features/diagram-details.js",
   "src/content/features/update-notification.js",
   "src/content/index.js",
 ];

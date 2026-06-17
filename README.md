@@ -106,6 +106,14 @@ LeanIX is powerful, but everyday workflows involve repetitive clicks — exporti
       <p>Clean, platform-matching modal dialogs for notifications, confirmations, and guided actions — with a dark backdrop, close button, and configurable footer buttons.</p>
     </td>
   </tr>
+  <tr>
+    <td width="50%">
+      <h3>🗂️ Diagram Details</h3>
+      <p><strong>Diagram pages</strong></p>
+      <p>A gear icon button next to the Edit button. Opens the Diagram Details panel in one click — no need to open the More dropdown first. Matches the settings icon used in the dropdown.</p>
+    </td>
+    <td width="50%"></td>
+  </tr>
 </table>
 
 <p align="right"><sub><a href="#">⬆ back to top</a></sub></p>

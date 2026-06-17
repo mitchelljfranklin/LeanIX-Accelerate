@@ -11,6 +11,7 @@
     "dataExport",
     "printExport",
     "documentsExport",
+    "diagramDetails",
     "updateNotification",
   ];
 

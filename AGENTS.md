@@ -39,6 +39,7 @@ LeanIX Accelerate — a Chrome Manifest V3 browser extension that injects custom
 | Data Export | `dataExport` | `src/content/features/data-export.js` | Factsheet & Inventory |
 | Print Export | `printExport` | `src/content/features/print-export.js` | Document detail |
 | Documents Export | `documentsExport` | `src/content/features/documents-export.js` | Doc list / Architecture Decisions |
+| Diagram Details | `diagramDetails` | `src/content/features/diagram-details.js` | Diagram pages — one-click Diagram Details shortcut |
 | Update Notification | `updateNotification` | `src/content/features/update-notification.js` | All — shows changelog on version update |
 
 ## How the Extension Works
@@ -58,8 +59,9 @@ Page load → content scripts injected (in manifest order)
       4. data-export.js (registers on window.__leanixFeatures__)
       5. print-export.js (registers on window.__leanixFeatures__)
       6. documents-export.js (registers on window.__leanixFeatures__)
-      7. update-notification.js (registers on window.__leanixFeatures__)
-      8. index.js runs:
+      7. diagram-details.js (registers on window.__leanixFeatures__)
+      8. update-notification.js (registers on window.__leanixFeatures__)
+      9. index.js runs:
           a. Checks isLeanIXPage()
           b. Reads SettingsStore.getAll()
           c. Iterates featureOrder, calls init() on each enabled feature
@@ -412,14 +414,15 @@ SettingsStore.onChange(callback)     // listens for storage changes
 | Class | Used by | Purpose |
 |---|---|---|
 | `.lx-ext-container-fixed` | data-export | Fixed bottom-right container (hidden by default) |
-| `.lx-ext-container-inline` | print-export, documents-export | Inline container for header button groups |
+| `.lx-ext-container-inline` | print-export, documents-export, diagram-details | Inline container for header button groups |
 | `.lx-ext-btn` | data-export | Floating export button (14px, shadow) |
 | `.lx-ext-btn-inline` | print-export, documents-export | Header button matching lx-button height (13px, 32px) |
+| `.lx-ext-btn-icon` | diagram-details | Square icon-only button (32×32, light border) matching native toolbar style |
 | `.lx-ext-menu` | all three | Dropdown menu base (hidden by default) |
 | `.lx-ext-menu-up` | data-export | Menu opens upward (button at bottom of viewport) |
 | `.lx-ext-menu-down` | print-export, documents-export | Menu opens downward (button in header) |
 | `.lx-ext-menu-item` | all three | Clickable menu option with hover highlight |
-| `.lx-ext-toast` | all three | Download notification toast (slide-up, auto-dismiss) |
+| `.lx-ext-toast` | all | Download notification toast (slide-up, auto-dismiss) |
 | `.lx-ext-modal-overlay` | modal.js, update-notification | Full-screen backdrop (fixed, flex, centered) |
 | `.lx-ext-modal` | modal.js, update-notification | White dialog container with shadow |
 | `.lx-ext-modal-close` | modal.js | Close (×) button, absolute top-right |

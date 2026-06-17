@@ -33,7 +33,7 @@
 
 /*
  * Inline export container
- * Features: print-export, documents-export (header-adjacent Export buttons)
+ * Features: print-export, documents-export, diagram-details (header-adjacent Export buttons)
  * Renders inline within a button group so it flows naturally alongside
  * existing LeanIX buttons (e.g. "Edit", "New Decision").
  */
@@ -47,6 +47,36 @@
 /* ==========================================================================
  * 2. Export Buttons
  * ========================================================================== */
+
+/*
+ * Square icon button
+ * Feature: diagram-details
+ * Matches the native LeanIX square icon buttons (e.g. the More "..." button).
+ * Displays an inline SVG icon, no text, with light border and background.
+ */
+.lx-ext-btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  background: transparent;
+  color: #555;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.lx-ext-btn-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+#lx-ext-diagram-details-container {
+  margin-left: 0;
+  margin-right: 8px;
+}
 
 /*
  * Floating export button

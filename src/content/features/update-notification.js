@@ -83,6 +83,7 @@ window.__leanixFeatures__ = window.__leanixFeatures__ || {};
         "Fixed documents export button not reappearing after SPA navigation",
         "Popup now shows the current extension version from the manifest",
         "Build improvements and reduced extension size",
+        "New direct edit button on Diagram display mode, once less click"
       ],
       linkText: "View all features on GitHub \u2192",
       linkUrl: "https://github.com/mitchelljfranklin/LeanIX-Accelerate#-features",

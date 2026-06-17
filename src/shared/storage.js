@@ -2,6 +2,7 @@ var FEATURE_DEFAULTS = {
   dataExport: true,
   printExport: true,
   documentsExport: true,
+  diagramDetails: true,
   updateNotification: true,
 };
 
@@ -15,7 +16,11 @@ var SettingsStore = class {
 
   static async getAll() {
     const result = await chrome.storage.sync.get(this.STORAGE_KEY);
-    return result[this.STORAGE_KEY] || DEFAULT_SETTINGS;
+    const stored = result[this.STORAGE_KEY] || {};
+    return {
+      theme: stored.theme || DEFAULT_SETTINGS.theme,
+      features: Object.assign({}, FEATURE_DEFAULTS, stored.features),
+    };
   }
 
   static async getFeature(name) {

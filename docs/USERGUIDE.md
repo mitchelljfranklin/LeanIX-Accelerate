@@ -124,6 +124,26 @@ The exported `.xlsx` file contains:
 
 ---
 
+## Feature: Diagram Details
+
+**Where it works:** Diagram pages where `lx-diagrams-container` is present.
+
+**What it does:** Adds a gear cog icon button next to the Edit button in the diagram toolbar, matching the settings icon from the More dropdown. One click opens the Diagram Details panel directly, bypassing the More dropdown entirely.
+
+### How to use
+
+1. Navigate to any diagram page in LeanIX
+2. Look for the gear icon next to the Edit button
+3. Click it — the More dropdown is triggered automatically, then Diagram Details is selected
+
+### Tips
+- The gear icon only appears when a diagram is loaded on the page
+- If the icon doesn't appear, make sure the feature is toggled **on** in the popup and that a diagram is visible
+
+<p align="right"><sub><a href="#">⬆ back to top</a></sub></p>
+
+---
+
 ## Full Settings Page
 
 Access the settings page by clicking **Configure** in the popup, or via `chrome://extensions` → LeanIX Accelerate → **Extension options**.
